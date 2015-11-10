@@ -10,4 +10,3 @@ class Application extends Controller {
   }
 
 }
-Adding an error
