@@ -40,7 +40,7 @@ printf "\n=== The CI environment has been initialized ===\n"
 
 # Importing database schema
 echo "--- Importing database schema ---"
-. "$ODB_CONSOLE \"CONNECT remote:localhost:2424/temp admin admin; IMPORT DATABASE $PARENT_DIR/ci-stuff/tresdb.json\""
+sh -c "$ODB_CONSOLE \"CONNECT remote:localhost:2424/temp admin admin; IMPORT DATABASE $PARENT_DIR/ci-stuff/tresdb.json\""
 sleep 10
 
 printf "\n===END===\n"
