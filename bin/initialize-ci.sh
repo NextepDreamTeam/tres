@@ -1,6 +1,5 @@
 #!/bin/sh
 
-ls ci-stuff/environment/
 
 PARENT_DIR=$(dirname $(cd "$(dirname "$0")"; pwd))
 CI_DIR="$PARENT_DIR/ci-stuff/environment"
