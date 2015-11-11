@@ -7,6 +7,7 @@ CI_DIR="$PARENT_DIR/ci-stuff/environment"
 ODB_VERSION=${1:-"2.1.5"}
 ODB_DIR="${CI_DIR}/orientdb-community-${ODB_VERSION}"
 ODB_LAUNCHER="${ODB_DIR}/bin/server.sh"
+ODB_CONSOLE="${ODB_DIR}/bin/console.sh"
 
 echo "=== Initializing CI environment ==="
 
@@ -36,3 +37,6 @@ sh -c $ODB_LAUNCHER </dev/null &>/dev/null &
 # Wait a bit for OrientDB to finish the initialization phase.
 sleep 10
 printf "\n=== The CI environment has been initialized ===\n"
+
+# Importing database schema
+. $ODB_CONSOLE "CONNECT remote:localhost:2424/temp admin admin; IMPORT DATABASE $PARENT_DIR/ci-stuff/tresdb.json"
