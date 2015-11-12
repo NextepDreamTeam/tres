@@ -9,9 +9,9 @@ import play.api.Play.current
 object Odb {
 
   def factory = new OrientGraphFactory(
-    current.configuration.getString("blueprints.orientdb.url").get,
-    current.configuration.getString("blueprints.orientdb.username").get,
-    current.configuration.getString("blueprints.orientdb.password").get
+    current.configuration.getString("tresdb.url").get,
+    current.configuration.getString("tresdb.username").get,
+    current.configuration.getString("tresdb.password").get
   ).setupPool(1,10)
 
 }

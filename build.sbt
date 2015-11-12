@@ -11,11 +11,12 @@ libraryDependencies ++= Seq(
   cache,
   ws,
   specs2 % Test,
-  "com.orientechnologies" % "orientdb-core" % "2.1.3",
-  "com.orientechnologies" % "orientdb-graphdb" % "2.1.3",
-  "com.orientechnologies" % "orientdb-client" % "2.1.3",
+  "com.orientechnologies" % "orientdb-core" % "2.1.5",
+  "com.orientechnologies" % "orientdb-graphdb" % "2.1.5",
+  "com.orientechnologies" % "orientdb-client" % "2.1.5",
   "com.tinkerpop.blueprints" % "blueprints-core" % "2.6.0",
-  "javax.persistence" % "persistence-api" % "1.0.2"
+  "javax.persistence" % "persistence-api" % "1.0.2",
+  "org.scalatest" % "scalatest_2.11" % "latest.integration" % "test"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
