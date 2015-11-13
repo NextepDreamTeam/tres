@@ -1,20 +1,25 @@
 package models.storage
 
-import org.scalatestplus.play.{OneAppPerSuite, PlaySpec}
-import play.api.test.FakeApplication
+import org.specs2.mutable._
+import org.specs2.runner._
+import org.junit.runner._
 
-/**
-  * Integration test for Odb class
+import play.api.test._
+import play.api.test.Helpers._
+
+/** Integration test for Odb class
+  *
   */
-class Odb$IntegrationTest extends PlaySpec with OneAppPerSuite {
+@RunWith(classOf[JUnitRunner])
+class Odb$IntegrationTest extends Specification {
 
-  implicit override lazy val app: FakeApplication = FakeApplication()
+  //implicit override lazy val app: FakeApplication = FakeApplication()
 
   "Odb" should {
 
-    "connect to db" in {
+    "connect to db" in new WithApplication{
       val graph = Odb.factory.getNoTx
-      graph.getRawGraph.isClosed mustBe false
+      graph.getRawGraph.isClosed must beEqualTo(false)
     }
 
   }
