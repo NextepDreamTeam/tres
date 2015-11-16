@@ -2,27 +2,23 @@ package controllers
 
 import algorithm.AlgorithmService
 import org.junit.runner.RunWith
+import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import org.specs2.specification.{AfterEach, BeforeEach}
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json._
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, WithApplication}
-import org.specs2.mock._
+import play.api.test._
 
 /** Unit tests for BridgeController class
   *
   */
 @RunWith(classOf[JUnitRunner])
-class BridgeController$UnitTest extends Specification with BeforeEach with AfterEach with Mockito {
+class BridgeController$UnitTest extends Specification with Mockito {
 
-  override protected def before: Any = {
 
-  }
-
-  override protected def after: Any = {
-
-  }
+  val mockAlgorithmService = mock[AlgorithmService]
+  val controller = new BridgeController()
+  controller.algorithmService=mockAlgorithmService
 
   "BridgeController" should {
 
@@ -31,10 +27,7 @@ class BridgeController$UnitTest extends Specification with BeforeEach with After
     }
 
     "ready must responds false" in new WithApplication{
-      val mockAlgorithmService = mock[AlgorithmService]
       mockAlgorithmService.ready returns false
-      val controller = new BridgeController()
-      controller.algorithmService=mockAlgorithmService
       val response = controller.ready().apply(FakeRequest(GET, "/tres/ready"))//route(FakeRequest(GET, "/tres/ready")).get
       val expected: JsValue = Json.obj("ready" -> false)
       status(response) must equalTo(OK)
@@ -43,15 +36,32 @@ class BridgeController$UnitTest extends Specification with BeforeEach with After
     }
 
     "ready must responds true" in new WithApplication{
-      val mockAlgorithmService = mock[AlgorithmService]
       mockAlgorithmService.ready returns true
-      val controller = new BridgeController()
-      controller.algorithmService=mockAlgorithmService
       val response = controller.ready().apply(FakeRequest(GET, "/tres/ready"))//route(FakeRequest(GET, "/tres/ready")).get
       val expected: JsValue = Json.obj("ready" -> true)
       status(response) must equalTo(OK)
       contentType(response) must beSome.which(_ == "application/json")
       contentAsJson(response) must equalTo(expected)
+    }
+
+    "insertBehavior must response bad request without json body" in new WithApplication() {
+      mockAlgorithmService.ready returns false
+      val response = controller.insertBehavior().apply(FakeRequest(POST, "/tres/behavior"))
+      status(response) must equalTo(BAD_REQUEST)
+    }
+
+    "insertBehavior must response bad request with invalid json body" in new WithApplication {
+      mockAlgorithmService.ready returns false
+      val body: JsValue = Json.parse("""{"invalid":"json"}""")
+      val response = controller.insertBehavior().apply(FakeRequest(POST, "/tres/behavior").withJsonBody(body))
+      status(response) must equalTo(BAD_REQUEST)
+    }
+
+    "insertBehavior must response ok with valid json body" in new WithApplication {
+      mockAlgorithmService.ready returns false
+      val body: JsValue = Json.parse("""{"item":{"tags":[{"name":"item:uno"},{"name":"item:due"},{"name":"item:tre"}]},"interactions":[{"widgetTag":{"name":"wtag:sport"},"action":"clicked"},{"widgetTag":{"name":"wtag::mountain"},"action":"onhover"}]}""")
+      val response = controller.insertBehavior().apply(FakeRequest(POST, "/tres/behavior").withJsonBody(body))
+      status(response) must equalTo(OK)
     }
 
   }

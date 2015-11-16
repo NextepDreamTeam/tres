@@ -15,8 +15,10 @@ libraryDependencies ++= Seq(
   "com.orientechnologies" % "orientdb-graphdb" % "2.1.5",
   "com.orientechnologies" % "orientdb-client" % "2.1.5",
   "com.tinkerpop.blueprints" % "blueprints-core" % "2.6.0",
-  "javax.persistence" % "persistence-api" % "1.0.2",
-  "org.mockito" % "mockito-core" % "1.10.19" % "test"
+  "javax.persistence" % "persistence-api" % "1.0.2"
+  //"com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.6.3"
+  //"org.scalamock" %% "scalamock-specs2-support" % "3.2" % "test"
+  //"org.mockito" % "mockito-core" % "1.10.19" % "test"
   //"org.scalatest" %% "scalatest" % "2.2.1" % "test",
   //"org.scalatestplus" %% "play" % "1.4.0-M3" % "test"
 )
