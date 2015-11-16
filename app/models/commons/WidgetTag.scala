@@ -5,4 +5,11 @@ package models.commons
   * @constructor create a new widget tag with a given name
   * @param name the name of the widget tag
   */
-class WidgetTag(name: String) {}
+class WidgetTag(val name: String) {}
+
+/**
+  *
+  */
+object WidgetTag {
+  def apply(name: String) = new WidgetTag(name: String)
+}

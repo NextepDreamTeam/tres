@@ -1,13 +1,12 @@
 package algorithm
 
 /**
-  * Rappresents the services of the algorithm
+  * Created by aandelie on 14/11/15.
   */
-trait AlgorithmService {
-
+object Id3Service extends AlgorithmService {
   /**
     * Method that returns true if the algorithm is ready to make the recommendation
     * @return Boolean
     */
-  def ready() : Boolean
+  override def ready(): Boolean = ???
 }
