@@ -5,7 +5,7 @@
 # Recommendation api
 GET     /tres/ready                 controllers.BridgeController.ready
 POST    /tres/behavior              controllers.BridgeController.insertBehavior
-#POST    /tres/recommendation        controllers.BridgeController.recommendation
+POST    /tres/recommendation        controllers.BridgeController.recommendation
 
 # Home page
 GET     /                           controllers.Application.index
