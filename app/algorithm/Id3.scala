@@ -41,11 +41,16 @@ object Id3Impl extends Id3 {
 
   def entropy(behaviorList : List[Behavior]): Double = ???
 
+  def getActions(actions: List[String]): List[String] = actions.distinct
+
   /**
     *
-    * @param behaviorList
+    * @param behaviors
     * @return
     */
-
+  def start(behaviors: List[Behavior]) = {
+    val actions = behaviors.flatMap(b => b.interactions).filter(p => p.widgetTag.name.equals("categoria")).map(i => i.action)
+    val unique = getActions(actions)
+  }
 
 }
