@@ -15,7 +15,7 @@ trait Id3{
 
 /**
   * Object that implements the methods of the trait
-  * @extends Id3
+  *
   */
 object Id3Impl extends Id3 {
 

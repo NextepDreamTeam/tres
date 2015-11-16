@@ -10,7 +10,7 @@ trait InteractionDao {
     * Method that return all the interactions from the database
     * @return Future[List[Interaction]]
     */
-  def all: Future[List[Interaction]]
+  def all: List[Interaction]
 
 
   /**
@@ -19,7 +19,7 @@ trait InteractionDao {
     * @param oldInteraction: Interaction
     * @return Future[Boolean]
     */
-  def update(newInteraction: Interaction, oldInteraction: Interaction) : Future[Boolean]
+  def update(newInteraction: Interaction, oldInteraction: Interaction) : Boolean
 
 
   /**
@@ -27,7 +27,7 @@ trait InteractionDao {
     * @param removeInteraction: Interaction
     * @return Future[Boolean]
     */
-  def remove(removeInteraction: Interaction) : Future[Boolean]
+  def remove(removeInteraction: Interaction) : Boolean
 
 
   /**
@@ -35,7 +35,7 @@ trait InteractionDao {
     * @param newInteraction: Interaction
     * @return Future[Boolean]
     */
-  def save(newInteraction: Interaction) : Future[Boolean]
+  def save(newInteraction: Interaction) : Boolean
 }
 
 object InteractionOdb extends InteractionDao{
@@ -43,7 +43,7 @@ object InteractionOdb extends InteractionDao{
     * Method that return all the interactions from the database
     * @return Future[List[Interaction]]
     */
-  override def all: Future[List[Interaction]] = ???
+  override def all: List[Interaction] = ???
 
   /**
     * Method that updates
@@ -51,19 +51,19 @@ object InteractionOdb extends InteractionDao{
     * @param oldInteraction: Interaction
     * @return Future[Boolean]
     */
-  override def update(newInteraction: Interaction, oldInteraction: Interaction): Future[Boolean] = ???
+  override def update(newInteraction: Interaction, oldInteraction: Interaction): Boolean = ???
 
   /**
     * Method that removes an interaction from the database
     * @param removeInteraction: Interaction
     * @return Future[Boolean]
     */
-  override def remove(removeInteraction: Interaction): Future[Boolean] = ???
+  override def remove(removeInteraction: Interaction): Boolean = ???
 
   /**
     * Method that saves a new interaction in the database
     * @param newInteraction: Interaction
     * @return Future[Boolean]
     */
-  override def save(newInteraction: Interaction): Future[Boolean] = ???
+  override def save(newInteraction: Interaction): Boolean = ???
 }
