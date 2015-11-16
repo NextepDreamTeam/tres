@@ -36,4 +36,14 @@ object Interaction {
     }
   }
 
+  lazy val interactionsReads = new Reads[List[Interaction]] {
+    def reads(json: JsValue) = {
+      try{
+        JsSuccess((json \ "interactions").as[List[Interaction]])
+      }catch {
+        case _ : Throwable => JsError()
+      }
+    }
+  }
+
 }
