@@ -7,14 +7,15 @@ import play.api.libs.json._
   * @constructor create a new interaction with given tag and action.
   * @param widgetTag the widget tag of the interaction.
   * @param action the action of the interaction.
+  * @param rid the corresponding rid of the database
   */
-class Interaction(val widgetTag: WidgetTag, val action: String) {}
+class Interaction(val widgetTag: WidgetTag, val action: String, val rid: Option[Object] = None) {}
 
-/**
+/** Companion object of interaction class.
   *
   */
 object Interaction {
-  def apply(widgetTag: WidgetTag, action: String) = new Interaction(widgetTag: WidgetTag, action: String)
+  def apply(widgetTag: WidgetTag, action: String, rid: Option[Object] = None) = new Interaction(widgetTag, action, rid)
 
   implicit val interactionWrites = new Writes[Interaction] {
     def writes(interaction: Interaction) = Json.obj(

@@ -6,14 +6,15 @@ import play.api.libs.json._
   *
   * @constructor create a new tag with given name.
   * @param name the tag's name.
+  * @param rid the corresponding rid of the database
   */
-class Tag(val name: String) {}
+class Tag(val name: String, val rid: Option[Object] = None) {}
 
-/**
+/** Companion object of tag class.
   *
   */
 object Tag{
-  def apply(name: String) = new Tag(name: String)
+  def apply(name: String, rid: Option[Object] = None) = new Tag(name, rid)
 
   implicit val tagWrites = new Writes[Tag] {
     def writes(tag: Tag) = Json.obj(

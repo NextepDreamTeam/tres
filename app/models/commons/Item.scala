@@ -7,14 +7,15 @@ import play.api.libs.json._
   *
   * @constructor create a new item with a given tags list
   * @param tags a list of tag that represents the item
+  * @param rid the corresponding rid of the database
   */
-class Item(val tags: List[Tag]) {}
+class Item(val tags: List[Tag], val rid: Option[Object] = None) {}
 
-/**
+/** Companion object of item class.
   *
   */
 object Item{
-  def apply(tags: List[Tag]) = new Item(tags: List[Tag])
+  def apply(tags: List[Tag], rid: Option[Object] = None) = new Item(tags, rid)
 
   implicit val itemWrites = new Writes[Item] {
     def writes(item: Item) = Json.obj(
