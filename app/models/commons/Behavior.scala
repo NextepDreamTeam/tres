@@ -9,13 +9,13 @@ import play.api.libs.json._
   * @param interactions a list of interaction of the behavior.
   * @param rid the corresponding rid of the database
   */
-class Behavior(val item: Item, val interactions: List[Interaction], val rid: Option[Object] = None) {}
+class Behavior(val item: Item, val interactions: List[Interaction], val rid: Option[AnyRef] = None) {}
 
 /** Companion object of behavior class.
   *
   */
 object Behavior {
-  def apply(item: Item, interactions: List[Interaction], rid: Option[Object] = None) = new Behavior(item: Item, interactions, rid)
+  def apply(item: Item, interactions: List[Interaction], rid: Option[AnyRef] = None) = new Behavior(item: Item, interactions, rid)
 
   implicit val behaviorWrites = new Writes[Behavior] {
     def writes(behavior: Behavior) = Json.obj(

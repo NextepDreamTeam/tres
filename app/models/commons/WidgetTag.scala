@@ -8,13 +8,13 @@ import play.api.libs.json._
   * @param name the name of the widget tag
   * @param rid the corresponding rid of the database
   */
-class WidgetTag(val name: String, val rid: Option[Object] = None) {}
+class WidgetTag(val name: String, val rid: Option[AnyRef] = None) {}
 
 /** Companion object of widget tag class.
   *
   */
 object WidgetTag {
-  def apply(name: String, rid: Option[Object] = None) = new WidgetTag(name, rid)
+  def apply(name: String, rid: Option[AnyRef] = None) = new WidgetTag(name, rid)
 
   implicit val widgetTagWrites = new Writes[WidgetTag] {
     def writes(widgetTag: WidgetTag) = Json.obj(
