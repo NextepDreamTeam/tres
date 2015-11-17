@@ -1,6 +1,6 @@
 package controllers
 
-import algorithm.{Id3Service, AlgorithmService}
+import models.algorithm.{Id3Service, AlgorithmService}
 import models.commons._
 import play.api.mvc._
 import play.api.libs.json._

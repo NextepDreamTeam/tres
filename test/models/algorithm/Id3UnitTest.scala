@@ -1,4 +1,4 @@
-package algorithm
+package models.algorithm
 
 import org.specs2.mutable.Specification
 

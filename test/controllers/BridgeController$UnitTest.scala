@@ -1,6 +1,6 @@
 package controllers
 
-import algorithm.AlgorithmService
+import models.algorithm.AlgorithmService
 import org.junit.runner.RunWith
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification

@@ -1,4 +1,4 @@
-package algorithm
+package models.algorithm
 
 import models.commons.Item
 import models.commons.Behavior
@@ -6,7 +6,7 @@ import scala.collection.mutable.ListBuffer
 
 
 /**
-  * Trait used to define signature of the supported methods by Id3 algorithm
+  * Trait used to define signature of the supported methods by Id3 models.algorithm
   */
 trait Id3{
   def entropy(behaviorList : List[Behavior]): Double
