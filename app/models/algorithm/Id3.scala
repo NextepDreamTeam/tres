@@ -1,7 +1,7 @@
 package models.algorithm
 
-import models.commons.Item
-import models.commons.Behavior
+import models.commons.{WidgetTag, Interaction, Behavior, Item}
+
 import scala.collection.mutable.ListBuffer
 
 
@@ -39,18 +39,51 @@ object Id3Impl extends Id3 {
     output
   }
 
-  def entropy(behaviorList : List[Behavior]): Double = ???
-
-  def getActions(actions: List[String]): List[String] = actions.distinct
 
   /**
-    *
-    * @param behaviors
-    * @return
+    * Method that returns only the distinct action in a list of actions filtered by widgetTag
+    * @param behaviors : List[Behavior]
+    * @param wtag : String
+    * @return List[String]
     */
-  def start(behaviors: List[Behavior]) = {
-    val actions = behaviors.flatMap(b => b.interactions).filter(p => p.widgetTag.name.equals("categoria")).map(i => i.action)
-    val unique = getActions(actions)
+  def getDistinctListOfActions(behaviors: List[Behavior], wtag : String): List[String] = {
+    val actions = behaviors.flatMap(b => b.interactions).filter(p => p.widgetTag.name == wtag)
+    actions.map(a => a.action).distinct
   }
 
+
+  /**
+    * Method that return anly the behaviours that contains the interaction with widgetTag wtag and action waction
+    * @param behaviors : List[Behaviours]
+    * @param wtag : String
+    * @param waction : String
+    * @return List[Behaviors]
+    */
+  def getBehaviorsWithWTagAndAction(behaviors: List[Behavior], wtag: String, waction: String): List[Behavior]={
+    val yes = new Interaction(WidgetTag(wtag),waction,None)
+    behaviors.filter( b=> b.interactions.contains(yes))
+  }
+
+  def entropy(behaviorList : List[Behavior]): Double = {
+    var entropy : Double = 0
+    val itemList : List[Item] = Nil
+    var numberTargetOccurences = new ListBuffer[Int]()
+    for (i <- itemList){
+      var sum: Int = 0
+      for (b <- behaviorList){
+        if (i.rid == b.item.rid)
+          sum = sum+1
+      }
+      numberTargetOccurences += sum
+    }
+    for(n <- numberTargetOccurences){
+      entropy = entropy - ((n/behaviorList.length.toDouble)*(Math.log(n/behaviorList.length.toDouble)/Math.log(2)))
+    }
+
+    entropy
+  }
+
+
+
+  def start() = ???
 }
