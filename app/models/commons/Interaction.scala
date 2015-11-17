@@ -9,8 +9,7 @@ import play.api.libs.json._
   * @param action the action of the interaction.
   * @param rid the corresponding rid of the database
   */
-class Interaction(val widgetTag: WidgetTag, val action: String, val rid: Option[Object] = None) {
-
+class Interaction(val widgetTag: WidgetTag, val action: String, val rid: Option[AnyRef] = None) {
   override def equals (other: Any) = other match {
     case o: Interaction => widgetTag.name == o.widgetTag.name && action == o.action
     case _ => false }
@@ -20,7 +19,7 @@ class Interaction(val widgetTag: WidgetTag, val action: String, val rid: Option[
   *
   */
 object Interaction {
-  def apply(widgetTag: WidgetTag, action: String, rid: Option[Object] = None) = new Interaction(widgetTag, action, rid)
+  def apply(widgetTag: WidgetTag, action: String, rid: Option[AnyRef] = None) = new Interaction(widgetTag, action, rid)
 
   implicit val interactionWrites = new Writes[Interaction] {
     def writes(interaction: Interaction) = Json.obj(
