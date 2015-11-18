@@ -15,6 +15,8 @@ class Item(val tags: List[Tag], val rid: Option[AnyRef] = None) {
     case _ => false
   }
   override def toString: String = super.toString + s" tags:$tags rid:$rid "
+
+  def id = rid.get
 }
 
 /** Companion object of item class.

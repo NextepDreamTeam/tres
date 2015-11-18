@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
   */
 trait Id3{
   def entropy(behaviorList : List[Behavior], itemList: List[Item]): Double
-  def gain(behaviorList: List[Behavior], itemList: List[Item]): Double
+  def gain(behaviorList: List[Behavior], itemList: List[Item], attributeTag: WidgetTag): Double
 }
 
 /**
@@ -44,7 +44,7 @@ object Id3Impl extends Id3 {
   /**
     * Method that calculates entropy
     * @param behaviorList : List[Behavior]
-    * @param itemList
+    * @param itemList : List[Item]
     * @return Double
     */
   def entropy(behaviorList : List[Behavior], itemList: List[Item]): Double = {
@@ -53,21 +53,33 @@ object Id3Impl extends Id3 {
     for (i <- itemList){
       var sum: Int = 0
       for (b <- behaviorList){
-        if (i.rid == b.item.rid)
+        if (i.id.eq(b.item.id))
           sum = sum+1
       }
       numberTargetOccurences += sum
     }
     for(n <- numberTargetOccurences){
-      entropy = entropy - ((n/behaviorList.length.toDouble)*(Math.log(n/behaviorList.length.toDouble)/Math.log(2)))
+      if(n!=0)
+        entropy = entropy - ((n/behaviorList.length.toDouble)*(Math.log(n/behaviorList.length.toDouble)/Math.log(2)))
     }
     entropy
   }
 
-  def gain(behaviorList: List[Behavior], itemList: List[Item]): Double = ???
-
-
-
+  /**
+    * Method that calculates gain
+    * @param behaviorList : List[Behavior]
+    * @param itemList : List[Item]
+    * @param attributeTag : WidgetTag
+    * @return
+    */
+  def gain(behaviorList: List[Behavior], itemList: List[Item], attributeTag: WidgetTag): Double = {
+    var gain = entropy(behaviorList,itemList) // data set entropy ( entropy(S) )
+    for( i <- getDistinctListOfActions(behaviorList, attributeTag.name)){
+      gain = gain - ((getBehaviorsWithWTagAndAction(behaviorList, attributeTag.name, i).length/behaviorList.length.toDouble)
+        * entropy(getBehaviorsWithWTagAndAction(behaviorList,attributeTag.name,i),itemList))
+    }
+    gain
+  }
 
 
 
