@@ -16,7 +16,7 @@ trait BehaviorDao {
 
   def all()(implicit orientGraphNoTx: OrientGraphNoTx): List[Behavior]
 
-  //def save(behavior: Behavior)(implicit orientGraph: OrientGraph): Boolean
+  def save(behavior: Behavior)(implicit orientGraph: OrientGraph): Boolean
 
 }
 
@@ -41,7 +41,7 @@ object BehaviorOdb extends BehaviorDao{
     orientGraphNoTx.getVerticesOfClass("behavior").asScala.map(b => getBehavior(b.getId)).toList
   }
 
-  /*override def save(behavior: Behavior)(implicit orientGraph: OrientGraph): Boolean = {
+  override def save(behavior: Behavior)(implicit orientGraph: OrientGraph): Boolean = {
     behavior.rid match {
       case Some(x) => false //should i throw an exception?
       case None => {
@@ -59,5 +59,5 @@ object BehaviorOdb extends BehaviorDao{
         true
       }
     }
-  }*/
+  }
 }
