@@ -9,8 +9,8 @@ import scala.collection.mutable.ListBuffer
   * Trait used to define signature of the supported methods by Id3 models.algorithm
   */
 trait Id3{
-  def entropy(behaviorList : List[Behavior]): Double
-  //def gain()
+  def entropy(behaviorList : List[Behavior], itemList: List[Item]): Double
+  def gain(behaviorList: List[Behavior], itemList: List[Item]): Double
 }
 
 /**
@@ -20,35 +20,13 @@ trait Id3{
 object Id3Impl extends Id3 {
 
   /**
-    * Method that counts the occurences for each target
-    * @param itemList
-    * @param behaviorList
-    * @return List[(Item, Int)] returns for every Item the number of occurences
-    */
-  def occurencesForEachTarget(itemList : List[Item], behaviorList: List[Behavior]): List[(Item, Int)] = {
-    var numberTargetOccurences = new ListBuffer[Int]()
-    for (i <- itemList){
-      var sum: Int = 0
-      for (b <- behaviorList){
-        if (i == b.item)
-          sum = sum+1
-      }
-      numberTargetOccurences += sum
-    }
-    var output = (itemList zip numberTargetOccurences.toList)
-    output
-  }
-
-
-  /**
     * Method that returns only the distinct action in a list of actions filtered by widgetTag
     * @param behaviors : List[Behavior]
     * @param wtag : String
     * @return List[String]
     */
   def getDistinctListOfActions(behaviors: List[Behavior], wtag : String): List[String] = {
-    val actions = behaviors.flatMap(b => b.interactions).filter(p => p.widgetTag.name == wtag)
-    actions.map(a => a.action).distinct
+    behaviors.flatMap(b => b.interactions).filter(p => p.widgetTag.name == wtag).map(a => a.action).distinct
   }
 
 
@@ -60,13 +38,17 @@ object Id3Impl extends Id3 {
     * @return List[Behaviors]
     */
   def getBehaviorsWithWTagAndAction(behaviors: List[Behavior], wtag: String, waction: String): List[Behavior]={
-    val yes = new Interaction(WidgetTag(wtag),waction,None)
-    behaviors.filter( b=> b.interactions.contains(yes))
+    behaviors.filter( b=> b.interactions.contains(Interaction(WidgetTag(wtag),waction,None)))
   }
 
-  def entropy(behaviorList : List[Behavior]): Double = {
+  /**
+    * Method that calculates entropy
+    * @param behaviorList : List[Behavior]
+    * @param itemList
+    * @return Double
+    */
+  def entropy(behaviorList : List[Behavior], itemList: List[Item]): Double = {
     var entropy : Double = 0
-    val itemList : List[Item] = Nil
     var numberTargetOccurences = new ListBuffer[Int]()
     for (i <- itemList){
       var sum: Int = 0
@@ -79,9 +61,13 @@ object Id3Impl extends Id3 {
     for(n <- numberTargetOccurences){
       entropy = entropy - ((n/behaviorList.length.toDouble)*(Math.log(n/behaviorList.length.toDouble)/Math.log(2)))
     }
-
     entropy
   }
+
+  def gain(behaviorList: List[Behavior], itemList: List[Item]): Double = ???
+
+
+
 
 
 
