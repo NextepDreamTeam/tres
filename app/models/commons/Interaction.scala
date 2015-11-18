@@ -11,8 +11,10 @@ import play.api.libs.json._
   */
 class Interaction(val widgetTag: WidgetTag, val action: String, val rid: Option[AnyRef] = None) {
   override def equals (other: Any) = other match {
-    case o: Interaction => widgetTag.name == o.widgetTag.name && action == o.action
-    case _ => false }
+    case that: Interaction => widgetTag.equals(that.widgetTag) && action.equals(that.action)
+    case _ => false
+  }
+  override def toString: String = super.toString + s" widgetTag: $widgetTag action: $action"
 }
 
 /** Companion object of interaction class.
