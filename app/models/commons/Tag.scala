@@ -8,7 +8,7 @@ import play.api.libs.json._
   * @param name the tag's name.
   * @param rid the corresponding rid of the database
   */
-class Tag(val name: String, val rid: Option[AnyRef] = None) {
+class Tag(val name: String, var rid: Option[AnyRef] = None) {
   override def equals(other: Any): Boolean = other match {
     case that: Tag => name.equals(that.name)
     case _ => false

@@ -1,9 +1,8 @@
 package models.storage
 
+
 import scala.collection.JavaConverters._
-import scala.collection.JavaConversions._
 import com.tinkerpop.blueprints.{Edge, Direction, Vertex}
-import com.tinkerpop.blueprints.impls.orient.{OrientVertexType, OrientGraph, OrientGraphNoTx}
 import models.commons._
 
 
@@ -12,11 +11,11 @@ import models.commons._
   */
 trait BehaviorDao {
 
-  def getBehavior(rid: Object)(implicit orientGraphNoTx: OrientGraphNoTx): Behavior
+  def getBehavior(rid: Object): Behavior
 
-  def all()(implicit orientGraphNoTx: OrientGraphNoTx): List[Behavior]
+  def all(): List[Behavior]
 
-  def save(behavior: Behavior)(implicit orientGraph: OrientGraph): Boolean
+  def save(behavior: Behavior): Boolean
 
 }
 
@@ -25,7 +24,8 @@ object BehaviorOdb extends BehaviorDao{
   var interactionDao: InteractionDao = InteractionOdb
   var itemDao: ItemDao = ItemOdb
 
-  override def getBehavior(rid: AnyRef)(implicit orientGraphNoTx: OrientGraphNoTx): Behavior = {
+  override def getBehavior(rid: AnyRef): Behavior = {
+    val orientGraphNoTx = Odb.factory.getNoTx
     val vertex: Vertex = orientGraphNoTx.getVertex(rid)
     val interactionsEdges: Iterable[Edge] = vertex.getEdges(Direction.OUT,"interaction").asScala
     val interactions: List[Interaction] =
@@ -33,31 +33,32 @@ object BehaviorOdb extends BehaviorDao{
     val itemEdges: Iterable[Edge] = vertex.getEdges(Direction.OUT,"result").asScala
     if (itemEdges.isEmpty) throw new Exception("Item for behavior " + rid + " must be one")
     val itemVertex: Vertex = itemEdges.head.getVertex(Direction.IN)
-    val item: Item = itemDao.getItem(itemVertex.getId)(orientGraphNoTx)
+    val item: Item = itemDao.getItem(itemVertex.getId)
     Behavior(item,interactions,Option(rid))
   }
 
-  override def all()(implicit orientGraphNoTx: OrientGraphNoTx): List[Behavior] = {
+  override def all(): List[Behavior] = {
+    val orientGraphNoTx = Odb.factory.getNoTx
     orientGraphNoTx.getVerticesOfClass("behavior").asScala.map(b => getBehavior(b.getId)).toList
   }
 
-  override def save(behavior: Behavior)(implicit orientGraph: OrientGraph): Boolean = {
+  override def save(behavior: Behavior): Boolean = {
+    val orientGraph = Odb.factory.getTx
     behavior.rid match {
       case Some(x) => false //should i throw an exception?
-      case None => {
-        val behaviorVertex: OrientVertexType = orientGraph.createVertexType("behavior")
-        //cercare l'item
-        //se non lo trovo creo l'item
-        //se lo trovo tengo il riferimento
-        //creo l'edge con il riferimento dell'item
-
-        //per ogni tag
-        //cerco il tag
-        //se non lo trovo creo il tag
-        //se lo trovo tengo il riferimento
-        //creo l'edge con il riferimento del tag
+      case None =>
+        val behaviorVertex: Vertex = orientGraph.addVertex("behavior", null)
+        itemDao.searchItem(behavior.item) match {
+          case None => itemDao.save(behavior.item)
+          case Some(rid) => behavior.item.rid = Option(rid)
+        }
+        val itemVertex: Vertex = orientGraph.getVertex(behavior.item.rid.get)
+        behavior.rid = Option(behaviorVertex.getId)
+        orientGraph.commit()
+        orientGraph.addEdge(null, behaviorVertex, itemVertex, "result")
+        orientGraph.commit()
+        behavior.interactions.foreach( interaction => interactionDao.save(interaction, behavior) )
         true
-      }
     }
   }
 }

@@ -9,7 +9,7 @@ import play.api.libs.json._
   * @param interactions a list of interaction of the behavior.
   * @param rid the corresponding rid of the database
   */
-class Behavior(val item: Item, val interactions: List[Interaction], val rid: Option[AnyRef] = None) {
+class Behavior(val item: Item, val interactions: List[Interaction], var rid: Option[AnyRef] = None) {
   override def equals(other: Any): Boolean = other match {
     case that: Behavior => item.equals(that.item) && interactions.equals(that.interactions)
     case _ => false

@@ -9,7 +9,8 @@ import play.api.Play.current
   */
 object Odb {
 
-  def clearDb(graph: OrientGraph): Unit = {
+  def clearDb() = {
+    val graph = factory.getNoTx
     graph.getVertices().asScala.foreach(v => v.remove())
   }
 
@@ -20,10 +21,10 @@ object Odb {
     * @return a new OrientGraphFactory instance with the credentials given by
     *         configuration file
     */
-  def factory = new OrientGraphFactory(
+  val factory = new OrientGraphFactory(
     current.configuration.getString("tresdb.url").get,
     current.configuration.getString("tresdb.username").get,
     current.configuration.getString("tresdb.password").get
-  ).setupPool(1,10)
+  ).setupPool(1,50)
 
 }

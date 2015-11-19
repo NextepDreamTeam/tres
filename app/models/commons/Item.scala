@@ -9,7 +9,7 @@ import play.api.libs.json._
   * @param tags a list of tag that represents the item
   * @param rid the corresponding rid of the database
   */
-class Item(val tags: List[Tag], val rid: Option[AnyRef] = None) {
+class Item(val tags: List[Tag], var rid: Option[AnyRef] = None) {
   override def equals (other: Any) = other match {
     case that: Item => tags.equals(that.tags)
     case _ => false
