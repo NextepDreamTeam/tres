@@ -4,7 +4,7 @@ import scala.collection.JavaConverters._
 import com.orientechnologies.orient.core.sql.OCommandSQL
 import com.tinkerpop.blueprints.Vertex
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
-import models.commons.WidgetTag
+import models.commons.{Behavior, WidgetTag}
 
 
 /** An interface that represent the access module to db for widget tag instance
@@ -12,6 +12,12 @@ import models.commons.WidgetTag
   */
 trait WidgetTagDao {
 
+
+  /** This method supply all widget tag stored in the database
+    *
+    * @return a list fo all widget tag on database
+    */
+  def all(): List[WidgetTag]
 
   /** This method save the given widget tag in the database and it change it's rid value with his new rid value
     *
@@ -89,5 +95,14 @@ object WidgetTagOdb extends WidgetTagDao{
         widgetTag.rid = Option(widgetTagVertex.getId)
         true
     }
+  }
+
+  /** This method supply all widget tag stored in the database
+    *
+    * @return a list fo all widget tag on database
+    */
+  override def all(): List[WidgetTag] = {
+    val orientGraphNoTx = Odb.factory.getNoTx
+    orientGraphNoTx.getVerticesOfClass("behavior").asScala.map(b => getWidgetTag(b.getId)).toList
   }
 }

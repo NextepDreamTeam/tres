@@ -13,6 +13,12 @@ import models.commons._
 trait ItemDao {
 
 
+  /** This method supply all item stored in the database
+    *
+    * @return a list fo all item on database
+    */
+  def all(): List[Item]
+
   /** This method it supply the current item by given rid
     *
     * @param rid rid value of the item
@@ -109,5 +115,14 @@ object ItemOdb extends ItemDao{
         item.rid = Option(itemVertex.getId)
         true
     }
+  }
+
+  /** This method supply all item stored in the database
+    *
+    * @return a list fo all item on database
+    */
+  override def all(): List[Item] = {
+    val orientGraphNoTx = Odb.factory.getNoTx
+    orientGraphNoTx.getVerticesOfClass("behavior").asScala.map(b => getItem(b.getId)).toList
   }
 }
