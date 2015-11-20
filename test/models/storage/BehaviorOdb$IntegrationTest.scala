@@ -127,9 +127,10 @@ class BehaviorOdb$IntegrationTest extends Specification {
       val behaviorSearched: OrientDynaElementIterable = noTxGraph.command(new OCommandSQL(query)).execute()
       var response = "success"
       behaviorSearched.asScala.toList match {
-        case rid :: xs => b.rid.get must equalTo(rid); println("SI")
-        case Nil => response = "failed"; println("NO")
+        case rid :: xs => b.rid.get must equalTo(rid)
+        case Nil => response = "failed"
       }
+      Odb.clearDb()
       response must equalTo("success")
     }
 

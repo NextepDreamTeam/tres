@@ -54,6 +54,7 @@ object InteractionOdb extends InteractionDao{
         val behaviorVertex: Vertex = orientGraph.getVertex(behavior.rid.get)
         val widgetTagVertex: Vertex = orientGraph.getVertex(interaction.widgetTag.rid.get)
         val interactionEdge: Edge = orientGraph.addEdge(null, behaviorVertex, widgetTagVertex, "interaction")
+        interactionEdge.setProperty("action",interaction.action)
         orientGraph.commit()
         interaction.rid = Option(interactionEdge.getId)
         true
