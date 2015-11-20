@@ -7,23 +7,51 @@ import com.tinkerpop.blueprints.{Edge, Direction, Vertex}
 import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import models.commons._
 
-/**
-  * Created by aandelie on 17/11/15.
+/** An interface that represent the access module to db for item instance
+  *
   */
 trait ItemDao {
 
-  def getItem(rid: Object): Item
 
+  /** This method it supply the current item by given rid
+    *
+    * @param rid rid value of the item
+    * @return return the item referred
+    */
+  def getItem(rid: AnyRef): Item
+
+
+  /** This method it searches the given item on the database
+    *
+    * @param item item to be searched
+    * @return return rid of the search, None if there isn't
+    */
   def searchItem(item: Item): Option[AnyRef]
 
+
+  /** This method save the given item in the database and it change it's rid value with his new rid value
+    *
+    * @param item the item that has to be stored on database
+    * @return true commit, false if is already on database
+    */
   def save(item: Item): Boolean
 
 }
 
+
+/** A singleton that implements item dao for orientDB
+  *
+  */
 object ItemOdb extends ItemDao{
 
   var tagDao: TagDao = TagOdb
 
+
+  /** This method it supply the current item by given rid
+    *
+    * @param rid rid value of the item
+    * @return return the item referred
+    */
   override def getItem(rid: AnyRef): Item = {
     val orientGraphNoTx = Odb.factory.getNoTx
     val itemVertex: Vertex = orientGraphNoTx.getVertex(rid)
@@ -34,6 +62,12 @@ object ItemOdb extends ItemDao{
     Item(tags,Option(rid))
   }
 
+
+  /** This method it searches the given item on the database
+    *
+    * @param item item to be searched
+    * @return return rid of the search, None if there isn't
+    */
   override def searchItem(item: Item): Option[AnyRef] = {
     val orientGraphNoTx = Odb.factory.getNoTx
     var conditions = "true = true " //useless condition
@@ -48,6 +82,12 @@ object ItemOdb extends ItemDao{
     }
   }
 
+
+  /** This method save the given item in the database and it change it's rid value with his new rid value
+    *
+    * @param item the item that has to be stored on database
+    * @return true commit, false if is already on database
+    */
   override def save(item: Item): Boolean = {
     val orientGraph = Odb.factory.getTx
     item.rid match {

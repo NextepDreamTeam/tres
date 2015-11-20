@@ -9,11 +9,23 @@ import play.api.libs.json._
   * @param rid the corresponding rid of the database
   */
 class Tag(val name: String, var rid: Option[AnyRef] = None) {
+
+
+  /** A method that compare this object with a given object
+    *
+    * @param other an object to compare
+    * @return true if other is a tag and it match all fields
+    */
   override def equals(other: Any): Boolean = other match {
     case that: Tag => name.equals(that.name)
     case _ => false
   }
 
+
+  /** A method that return the string representation of thw object, it prints every field
+    *
+    * @return the string representation of the object
+    */
   override def toString: String = super.toString + s" name: $name rid: $rid "
 }
 
@@ -21,14 +33,32 @@ class Tag(val name: String, var rid: Option[AnyRef] = None) {
   *
   */
 object Tag{
+
+
+  /** Constructor for the tag class
+    *
+    * @param name the tag's name.
+    * @param rid the corresponding rid of the database
+    * @return returns a new tag with given name.
+    */
   def apply(name: String, rid: Option[AnyRef] = None) = new Tag(name, rid)
 
+
+  /** implicit value for json formatter for the rest output
+    * it includes every field except the rid field
+    * @return a specific new writes
+    */
   implicit val tagWrites = new Writes[Tag] {
     def writes(tag: Tag) = Json.obj(
       "name" -> tag.name
     )
   }
 
+
+  /** implicit value for json formatter for the rest output
+    * it includes every field except the rid field
+    * @return a specific new reads
+    */
   implicit val tagReads = new Reads[Tag] {
     def reads(json: JsValue) = {
       try{

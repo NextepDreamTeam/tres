@@ -8,18 +8,48 @@ import com.tinkerpop.blueprints.impls.orient.OrientDynaElementIterable
 import models.commons.Tag
 
 
-/**
+/** An interface that represent the access module to db for tag instance
   *
   */
 trait TagDao {
+
+
+  /** This method save the given tag in the database and it change it's rid value with his new rid value
+    *
+    * @param tag the behavior that has to be stored on database
+    * @return true commit, false if is already on database
+    */
   def save(tag: Tag): Boolean
 
+
+  /** This method it searches the given tag on the database
+    *
+    * @param tag tag to be searched
+    * @return return rid of the search, None if there isn't
+    */
   def searchTag(tag: Tag): Option[AnyRef]
 
-  def getTag(rid: Object): Tag
+
+  /** This method it supply the current tag by given rid
+    *
+    * @param rid rid value of the tag
+    * @return return the tag referred
+    */
+  def getTag(rid: AnyRef): Tag
 }
 
+
+/** A singleton that implements tag dao for orientDB
+  *
+  */
 object TagOdb extends TagDao{
+
+
+  /** This method it supply the current tag by given rid
+    *
+    * @param rid rid value of the tag
+    * @return return the tag referred
+    */
   override def getTag(rid: AnyRef): Tag = {
     val orientGraphNoTx = Odb.factory.getNoTx
     val tagVertex = orientGraphNoTx.getVertex(rid)
@@ -27,6 +57,12 @@ object TagOdb extends TagDao{
     Tag(name,Option(rid))
   }
 
+
+  /** This method it searches the given tag on the database
+    *
+    * @param tag tag to be searched
+    * @return return rid of the search, None if there isn't
+    */
   override def searchTag(tag: Tag): Option[AnyRef] = {
     val orientGraphNoTx = Odb.factory.getNoTx
     val query = s"""select from Tag where name = "${tag.name}" """
@@ -37,6 +73,12 @@ object TagOdb extends TagDao{
     }
   }
 
+
+  /** This method save the given tag in the database and it change it's rid value with his new rid value
+    *
+    * @param tag the behavior that has to be stored on database
+    * @return true commit, false if is already on database
+    */
   override def save(tag: Tag): Boolean = {
     val orientGraph = Odb.factory.getTx
     tag.rid match {

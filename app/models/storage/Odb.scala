@@ -9,10 +9,10 @@ import play.api.Play.current
   */
 object Odb {
 
-  def clearDb() = {
-    val graph = factory.getNoTx
-    graph.getVertices().asScala.foreach(v => v.remove())
-  }
+  /** Removes all records on the database
+    *
+    */
+  def clearDb() = factory.getNoTx.getVertices().asScala.foreach(v => v.remove())
 
 
   /** Creates a factory for Transactional and NonTransactional database
