@@ -12,6 +12,8 @@ import scala.collection.mutable.ListBuffer
 trait Id3{
   def entropy(behaviorList : List[Behavior], itemList: List[Item]): Double
   def gain(behaviorList: List[Behavior], itemList: List[Item], attributeTag: WidgetTag): Double
+  def start(behaviorList: List[Behavior], wtagList: List[WidgetTag], itemList: List[Item])
+
 }
 
 /**
@@ -82,12 +84,11 @@ object Id3Impl extends Id3 {
     gain
   }
 
-  //class Node(va data: String, val children: ListBuffer[(String, DecisionTree)])
-
   /*
+  class Node(val data: String, val children: ListBuffer[(String, Node)])
+
   class DecisionTree {
 
-    class Node(val data: String, val children: ListBuffer[(String, Node)])
 
     private var root: Node = null
 
@@ -145,6 +146,7 @@ object Id3Impl extends Id3 {
     }
   }
   */
+
 
   def start(behaviorList: List[Behavior], wtagList: List[WidgetTag], itemList: List[Item]) = ???
 
