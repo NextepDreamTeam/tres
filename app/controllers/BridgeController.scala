@@ -2,6 +2,7 @@ package controllers
 
 import models.algorithm.{Id3Service, AlgorithmService}
 import models.commons._
+import models.storage.{BehaviorOdb, BehaviorDao}
 import play.api.mvc._
 import play.api.libs.json._
 
@@ -13,6 +14,7 @@ class BridgeController extends Controller {
   this: Controller =>
 
   var algorithmService: AlgorithmService = Id3Service
+  var behaviorDao: BehaviorDao = BehaviorOdb
 
   /**
     *
@@ -30,13 +32,17 @@ class BridgeController extends Controller {
   def insertBehavior() = Action{ request =>
     val jsonObject = request.body.asJson
     jsonObject match {
+      case None => BadRequest("Need json")
       case Some(json) =>
         val validate: JsResult[Behavior] = json.validate[Behavior](Behavior.behaviorReads)
         validate match {
-          case JsSuccess(behavior, _) => Ok("Valid json") //TODO save behavior instance
           case JsError(_) => BadRequest("Invalid json request")
+          case JsSuccess(behavior, _) =>
+            behaviorDao.save(behavior) match {
+              case true => Created
+              case false => InternalServerError
+            }
         }
-      case None => BadRequest("Need json")
     }
   }
 

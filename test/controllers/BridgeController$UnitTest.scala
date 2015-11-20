@@ -1,6 +1,8 @@
 package controllers
 
 import models.algorithm.AlgorithmService
+import models.commons._
+import models.storage.BehaviorDao
 import org.junit.runner.RunWith
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
@@ -17,8 +19,10 @@ class BridgeController$UnitTest extends Specification with Mockito {
 
 
   val mockAlgorithmService = mock[AlgorithmService]
+  val mockBehaviorDao = mock[BehaviorDao]
   val controller = new BridgeController()
-  controller.algorithmService=mockAlgorithmService
+  controller.algorithmService = mockAlgorithmService
+  controller.behaviorDao = mockBehaviorDao
 
   "BridgeController" should {
 
@@ -59,9 +63,28 @@ class BridgeController$UnitTest extends Specification with Mockito {
 
     "insertBehavior must response ok with valid json body" in new WithApplication {
       mockAlgorithmService.ready returns false
+      mockBehaviorDao.all returns Nil
+      val behavior: Behavior = Behavior(
+        Item(Tag("item:uno")::Tag("item:due")::Tag("item:tre")::Nil),
+        Interaction(WidgetTag("wtag:sport"),"clicked") :: Interaction(WidgetTag("wtag::mountain"),"onhover") :: Nil
+      )
+      mockBehaviorDao.save(behavior: Behavior) returns true
       val body: JsValue = Json.parse("""{"item":{"tags":[{"name":"item:uno"},{"name":"item:due"},{"name":"item:tre"}]},"interactions":[{"widgetTag":{"name":"wtag:sport"},"action":"clicked"},{"widgetTag":{"name":"wtag::mountain"},"action":"onhover"}]}""")
       val response = controller.insertBehavior().apply(FakeRequest(POST, "/tres/behavior").withJsonBody(body))
-      status(response) must equalTo(OK)
+      status(response) must equalTo(CREATED)
+    }
+
+    "insertBehavior must response Internal Server Error with valid json body" in new WithApplication {
+      mockAlgorithmService.ready returns false
+      mockBehaviorDao.all returns Nil
+      val behavior: Behavior = Behavior(
+        Item(Tag("item:uno")::Tag("item:due")::Tag("item:tre")::Nil),
+        Interaction(WidgetTag("wtag:sport"),"clicked") :: Interaction(WidgetTag("wtag::mountain"),"onhover") :: Nil
+      )
+      mockBehaviorDao.save(behavior: Behavior) returns false
+      val body: JsValue = Json.parse("""{"item":{"tags":[{"name":"item:uno"},{"name":"item:due"},{"name":"item:tre"}]},"interactions":[{"widgetTag":{"name":"wtag:sport"},"action":"clicked"},{"widgetTag":{"name":"wtag::mountain"},"action":"onhover"}]}""")
+      val response = controller.insertBehavior().apply(FakeRequest(POST, "/tres/behavior").withJsonBody(body))
+      status(response) must equalTo(INTERNAL_SERVER_ERROR)
     }
 
     "recommendation must response bad request without json body" in new WithApplication {
@@ -78,7 +101,7 @@ class BridgeController$UnitTest extends Specification with Mockito {
     }
 
     "recommendation must response ok with valid json body" in new WithApplication {
-      mockAlgorithmService.ready returns false
+      mockAlgorithmService.ready returns true
       val body: JsValue = Json.parse("""{"interactions":[{"widgetTag":{"name":"wtag:sport"},"action":"clicked"},{"widgetTag":{"name":"wtag::mountain"},"action":"onhover"}]}""")
       val response = controller.recommendation().apply(FakeRequest(POST, "/tres/recommendation").withJsonBody(body))
       status(response) must equalTo(OK)
