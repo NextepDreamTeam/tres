@@ -10,4 +10,9 @@ trait AlgorithmService {
     * @return Boolean
     */
   def ready() : Boolean
+
+  /**
+    *
+    */
+  def start()
 }
