@@ -34,7 +34,7 @@ object Id3Impl extends Id3 {
 
 
   /**
-    * Method that return anly the behaviours that contains the interaction with widgetTag wtag and action waction
+    * Method that return only the behaviours that contains the interaction with widgetTag wtag and action waction
     * @param behaviors : List[Behaviours]
     * @param wtag : String
     * @param waction : String

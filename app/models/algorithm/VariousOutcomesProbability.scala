@@ -1,10 +1,12 @@
 package models.algorithm
 
-import models.commons.{WidgetTag, Item, Behavior}
+import models.commons.{Behavior, Item, WidgetTag}
 
 import scala.collection.mutable.ListBuffer
 
-
+/**
+  * Trait used to define signature of the supported methods by VariousOutcomesProbability in algorithm package
+  */
 trait VariousOutcomesProbability {
 
   def probabilityForItemWithWidgetTagAndAction(behaviorList: List[Behavior], itemList: List[Item], wtag: WidgetTag, action: String): List[(Item, String)]
@@ -13,9 +15,18 @@ trait VariousOutcomesProbability {
 
 }
 
+/**
+  * Object that implements the trait
+  */
 object VariousOutcomesProbabilityImpl {
 
-  def findItemsWithPercentage(behaviorList: List[Behavior], itemList: List[Item]): ListBuffer[(Item, String)] = {
+  /**
+    * Method that calculates the percentage and return the Item with the calculated percentage
+    * @param behaviorList : List[Behavior]
+    * @param itemList : List[Item]
+    * @return ListBuffer[(Item, String)]
+    */
+  def findItemsAndCalculatePercentage(behaviorList: List[Behavior], itemList: List[Item]): ListBuffer[(Item, String)] = {
     val totalBehaviors = behaviorList.length
     var output = new ListBuffer[(Item, String)]()
     for (i <- itemList) {
@@ -29,12 +40,28 @@ object VariousOutcomesProbabilityImpl {
     output
   }
 
+
+  /**
+    * Method that return the probability that an item could be chosen given the widgetTag and it's action
+    * @param behaviorList : List[Behavior]
+    * @param itemList : List[Item]
+    * @param wtag : WidgetTag
+    * @param action : String
+    * @return List[(Item, String)]
+    */
   def probabilityForItemWithWidgetTagAndAction(behaviorList: List[Behavior], itemList: List[Item], wtag: WidgetTag, action: String): List[(Item, String)] = {
     val behaviors = Id3Impl.getBehaviorsWithWTagAndAction(behaviorList,wtag.name, action)
-    findItemsWithPercentage(behaviors, itemList).toList
+    findItemsAndCalculatePercentage(behaviors, itemList).toList
   }
 
+
+  /**
+    * Method that returns the probability that an item could be choosen from the entire list of behaviors
+    * @param behaviorList : List[Behavior]
+    * @param itemList : List[Item]
+    * @return List[(Item, String)]
+    */
   def probabilityForItemsInBehaviors(behaviorList: List[Behavior], itemList: List[Item]): List[(Item, String)] = {
-    findItemsWithPercentage(behaviorList, itemList).toList
+    findItemsAndCalculatePercentage(behaviorList, itemList).toList
   }
 }
