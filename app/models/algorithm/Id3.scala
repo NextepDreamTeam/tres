@@ -12,8 +12,6 @@ import scala.collection.mutable.ListBuffer
 trait Id3{
   def entropy(behaviorList : List[Behavior], itemList: List[Item]): Double
   def gain(behaviorList: List[Behavior], itemList: List[Item], attributeTag: WidgetTag): Double
-  def start(behaviorList: List[Behavior], wtagList: List[WidgetTag], itemList: List[Item])
-
 }
 
 /**
@@ -83,71 +81,5 @@ object Id3Impl extends Id3 {
     }
     gain
   }
-
-  /*
-  class Node(val data: String, val children: ListBuffer[(String, Node)])
-
-  class DecisionTree {
-
-
-    private var root: Node = null
-
-    /*
-    def preorder(visit: WidgetTag => Unit) {
-      def recur(n: Node) {
-        visit(n.data)
-        for (c <- n.children) recur(c)
-      }
-      recur(root)
-    }
-
-    def postorder(visit: WidgetTag => Unit) {
-      def recur(n: Node) {
-        for (c <- n.children) recur(c)
-        visit(n.data)
-      }
-      recur(root)
-    }
-
-    def height(n: Node): Int = {
-      1 + n.children.foldleft(-1)((h, c) => h max height(c))
-    }
-
-    def size(n: Node): Int = {
-      1 + n.children.foldLeft(0)((s, c) => s + size(c))
-    }
-    */
-
-    def create(behaviorList: List[Behavior], wtagList: List[WidgetTag], itemList: List[Item]): Node = {
-
-      /*
-         Step 1: gain su tutti gli attributi
-         Step 2: mi salvo attributo(Nodo) dentro una variabile e i figli come tutti i possibili valori dell'attributo
-         Step 3: chiamata ricorsiva con gain e lista di behavior per ogni valore del padre(attributo)
-         */
-      wtagList.sortWith((left, right) => gain(behaviorList, itemList, left) > gain(behaviorList, itemList, right))
-      val w = wtagList.head
-      wtagList.filter(t => t.equals(w))
-
-      root = new Node(w.name, ListBuffer[(String, Node)]())
-
-      val attributeValues = getDistinctListOfActions(behaviorList, w.name)
-
-      attributeValues.foreach {
-        a => {
-          val newBehaviorList = getBehaviorsWithWTagAndAction(behaviorList, w.name, a)
-          val child = create(newBehaviorList, wtagList, itemList)
-
-          root.children += Tuple2[String, Node](a, child)
-
-        }
-      }
-      root
-    }
-  }
-  */
-
-
-  def start(behaviorList: List[Behavior], wtagList: List[WidgetTag], itemList: List[Item]) = ???
 
 }

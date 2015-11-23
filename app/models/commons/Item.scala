@@ -14,12 +14,29 @@ class Item(val tags: List[Tag], var rid: Option[AnyRef] = None) {
 
   /** A method that compare this object with a given object
     *
-    * @param other an object to compare
+    * @param that an object to compare
     * @return true if other is an item and it match all fields
     */
-  override def equals (other: Any) = other match {
-    case that: Item => tags.equals(that.tags)
+  override def equals (that: Any) = that match {
+    case that: Item => canEqual(that) && this.hashCode == that.hashCode
     case _ => false
+  }
+
+
+  /**
+    *
+    */
+  def canEqual(a: Any) = a.isInstanceOf[Item]
+
+
+  /**
+    *
+    */
+  override def hashCode: Int = {
+    val prime = 31
+    var result = 1
+    tags.foreach(tag => result = prime * result + tag.hashCode)
+    result
   }
 
 

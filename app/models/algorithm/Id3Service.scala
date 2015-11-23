@@ -28,7 +28,8 @@ object Id3Service extends AlgorithmService {
     val behaviors: List[Behavior] = behaviorDao.all()
     val able: Boolean = behaviors.size >= 100
     able match {
-      case true => decisionTree = None // Option(DecisionTree.create(behaviors))
+      case true => decisionTree = Option(DecisionTree.create(behaviors))
+      case false =>
     }
   }
 }

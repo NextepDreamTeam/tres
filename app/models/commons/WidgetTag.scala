@@ -13,13 +13,31 @@ class WidgetTag(val name: String, var rid: Option[AnyRef] = None) {
 
   /** A method that compare this object with a given object
     *
-    * @param other an object to compare
+    * @param that an object to compare
     * @return true if other is a widget tag and it match all fields
     */
-  override def equals (other: Any) = other match {
-    case that: WidgetTag => name.equals(that.name)
+  override def equals (that: Any): Boolean = that match {
+    case that: WidgetTag => canEqual(that) && this.hashCode == that.hashCode
     case _ => false
   }
+
+
+  /**
+    *
+    */
+  def canEqual(a: Any) = a.isInstanceOf[WidgetTag]
+
+
+  /**
+    *
+    */
+  override def hashCode: Int = {
+    val prime = 31
+    var result = 1
+    result = prime * result + name.hashCode
+    result
+  }
+
 
 
   /** A method that return the string representation of thw object, it prints every field
