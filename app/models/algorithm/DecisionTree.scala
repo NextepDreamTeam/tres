@@ -19,7 +19,12 @@ object DecisionTree {
     behaviorList.map(b => b.item).distinct
   }
 
+  def getBehaviorsWithInteraction(behaviorList: List[Behavior],interaction: Interaction): List[Behavior] ={
+    behaviorList.filter(b => b.interactions.contains(interaction))
+  }
+
   def create(behaviorList: List[Behavior], wtagsUsed: List[WidgetTag] = Nil): Tree = {
+    //control if widget tags intersection, if no return a leaf
     val wtagList: List[WidgetTag] = getDistinctWidgetTagList(behaviorList)
     val unusedWidgetTagList = wtagList.filter(t => !wtagsUsed.contains(t))
     if (unusedWidgetTagList.isEmpty) new Leaf(behaviorList)
@@ -33,7 +38,7 @@ object DecisionTree {
     val branches: ListMap[String,Tree] = ListMap(actionList.map(
       action => {
         val interaction = Interaction(widgetTag, action)
-        (action, create(behaviorList.filter(b => b.interactions.contains(interaction))) )
+        (action, create(getBehaviorsWithInteraction(behaviorList,interaction),widgetTag::wtagsUsed) )
       }
     ):_*)
     Node(behaviorList, widgetTag, branches)
