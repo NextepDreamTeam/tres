@@ -23,7 +23,7 @@ class Behavior(val item: Item, val interactions: List[Interaction], var rid: Opt
   }
 
 
-  /** A method that return the string representation of thw object, it prints every field
+  /** A method that return the string representation of the object, it prints every field
     *
     * @return the string representation of the object
     */
