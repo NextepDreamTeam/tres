@@ -3,15 +3,13 @@ package models.algorithm
 import models.commons._
 import org.specs2.mutable.Specification
 
-import scala.collection.immutable.ListMap
-
 /**
   * Created by aandelie on 24/11/15.
   */
 class DecisionTree$IntegrationTest extends Specification {
 
-  val no: Item = Item(Tag("La")::Tag("risposta")::Tag("è")::Tag("no")::Nil)
-  val si: Item = Item(Tag("La")::Tag("risposta")::Tag("è")::Tag("si")::Nil)
+  val no: Item = Item(Tag("no")::Nil)
+  val si: Item = Item(Tag("si")::Nil)
 
   val outlook: WidgetTag = WidgetTag("Outlook")
   val temperature: WidgetTag = WidgetTag("Temperature")
@@ -33,7 +31,7 @@ class DecisionTree$IntegrationTest extends Specification {
   val strong: String = "Strong"
 
 
-  val testSet: List[Behavior] =
+  val trainingSet: List[Behavior] =
     Behavior(no,Interaction(outlook,sunny)::Interaction(temperature,hot)::Interaction(humidity,high)::Interaction(wind,weak)::Nil):: //D1
       Behavior(no,Interaction(outlook,sunny)::Interaction(temperature,hot)::Interaction(humidity,high)::Interaction(wind,strong)::Nil):: //D2
       Behavior(si,Interaction(outlook,overcast)::Interaction(temperature,hot)::Interaction(humidity,high)::Interaction(wind,weak)::Nil):: //D3
@@ -52,9 +50,8 @@ class DecisionTree$IntegrationTest extends Specification {
 
   "DecisionTree$IntegrationTest" should {
     "create" in {
-      val response: Tree = DecisionTree.create(testSet)
-      println(response.toString)
-      1 mustEqual 1
+      val response: Tree = DecisionTree.create(trainingSet)
+      response.size mustEqual 8
     }
 
   }
