@@ -20,7 +20,8 @@ before_script:
 
 script: sbt test
 
-before_install:
-  - pip install codecov
+script:
+  - sbt clean coverage test
+
 after_success:
-  - codecov
+  - pip install --user NextepDreamTeam && NextepDreamTeam
