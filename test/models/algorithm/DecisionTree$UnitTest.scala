@@ -16,11 +16,11 @@ class DecisionTree$UnitTest extends Specification {
     ) ::
       Behavior(
         Item(Tag("tag:quattro") :: Tag("tag:due") :: Tag("tag:tre") :: Nil),
-        Interaction(WidgetTag("wtag:tre"), "click") :: Interaction(WidgetTag("wtag:quattro"), "click") :: Nil
+        Interaction(WidgetTag("wtag:tre"), "click") :: Interaction(WidgetTag("wtag:quattro"), "like") :: Nil
       ) ::
       Behavior(
         Item(Tag("tag:quattro") :: Tag("tag:due") :: Tag("tag:tre") :: Nil),
-        Interaction(WidgetTag("wtag:uno"), "click") :: Interaction(WidgetTag("wtag:tre"), "click") :: Nil
+        Interaction(WidgetTag("wtag:uno"), "onhover") :: Interaction(WidgetTag("wtag:tre"), "click") :: Nil
       ) ::
       Nil
 
@@ -45,6 +45,20 @@ class DecisionTree$UnitTest extends Specification {
       response.size mustEqual itemList.size
       response mustEqual itemList
     }
-
+    "getBehaviorsWithInteraction" in {
+      val interaction = Interaction(WidgetTag("wtag:tre"),"click")
+      val response = DecisionTree.getBehaviorsWithInteraction(behaviorList,interaction)
+      val expected = Behavior(
+        Item(Tag("tag:quattro") :: Tag("tag:due") :: Tag("tag:tre") :: Nil),
+        Interaction(WidgetTag("wtag:tre"), "click") :: Interaction(WidgetTag("wtag:quattro"), "like") :: Nil
+      ) ::
+        Behavior(
+          Item(Tag("tag:quattro") :: Tag("tag:due") :: Tag("tag:tre") :: Nil),
+          Interaction(WidgetTag("wtag:uno"), "onhover") :: Interaction(WidgetTag("wtag:tre"), "click") :: Nil
+        ) ::
+        Nil
+      response.size mustEqual expected.size
+      response mustEqual expected
+    }
   }
 }
