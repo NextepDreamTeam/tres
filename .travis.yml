@@ -19,3 +19,11 @@ before_script:
   - sh -c ./bin/initialize-ci.sh 2.1.5
 
 script: sbt test
+
+language: scala
+
+script:
+  - sbt clean coverage test
+
+after_success:
+  - pip install --user codecov && codecov
