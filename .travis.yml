@@ -24,4 +24,4 @@ script:
   - sbt clean coverage test
 
 after_success:
-  - pip install --user NextepDreamTeam && NextepDreamTeam
+  - pip install --user codecov && codecov
