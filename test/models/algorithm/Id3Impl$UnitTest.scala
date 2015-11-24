@@ -66,7 +66,7 @@ class Id3Impl$UnitTest extends Specification {
           Interaction(WidgetTag("wtag::mountain"), "onhover") :: Nil
       )
       val b3 = Behavior(
-        Item(Tag("item:u") :: Tag("item:d") :: Tag("item:t") :: Nil, Option("uno")),
+        Item(Tag("item:1") :: Tag("item:2") :: Tag("item:2") :: Nil, Option("uno")),
         Interaction(WidgetTag("wtag:sport"), "unclicked") ::
           Interaction(WidgetTag("wtag::mountain"), "hover") :: Nil
       )
@@ -80,7 +80,7 @@ class Id3Impl$UnitTest extends Specification {
           Interaction(WidgetTag("wtag::mountain"), "hover") :: Nil
       )
       val b6 = Behavior(
-        Item(Tag("item:u") :: Tag("item:d") :: Tag("item:t") :: Nil, Option("due")),
+        Item(Tag("item:uno") :: Tag("item:due") :: Tag("item:tre") :: Nil, Option("due")),
         Interaction(WidgetTag("wtag:sport"), "clicked") :: Nil
       )
 
@@ -106,7 +106,7 @@ class Id3Impl$UnitTest extends Specification {
           Interaction(WidgetTag("wtag::mountain"), "hover") :: Nil
       )
       val b2 = Behavior(
-        Item(Tag("item:1") :: Tag("item:2") :: Tag("item:2") :: Nil, Option("uno")),
+        Item(Tag("item:uno") :: Tag("item:due") :: Tag("item:tre") :: Nil, Option("uno")),
         Interaction(WidgetTag("wtag:sport"), "unclicked") ::
           Interaction(WidgetTag("wtag::mountain"), "onhover") :: Nil
       )
@@ -121,7 +121,7 @@ class Id3Impl$UnitTest extends Specification {
           Interaction(WidgetTag("wtag::mountain"), "onhover") :: Nil
       )
       val b5 = Behavior(
-        Item(Tag("item:1") :: Tag("item:2") :: Tag("item:2") :: Nil, Option("uno")),
+        Item(Tag("item:uno") :: Tag("item:due") :: Tag("item:tre") :: Nil, Option("uno")),
         Interaction(WidgetTag("wtag:sport"), "clicked") ::
           Interaction(WidgetTag("wtag::mountain"), "hover") :: Nil
       )
@@ -134,7 +134,7 @@ class Id3Impl$UnitTest extends Specification {
 
 
       val item1 = Item(Tag("item:uno") :: Tag("item:due") :: Tag("item:tre") :: Nil, Option("uno"))
-      val item2 = Item(Tag("item:1") :: Tag("item:2") :: Tag("item:2") :: Nil, Option("due"))
+      val item2 = Item(Tag("item:u") :: Tag("item:d") :: Tag("item:t") :: Nil, Option("due"))
 
       val wTag = WidgetTag("wtag:sport", None)
 

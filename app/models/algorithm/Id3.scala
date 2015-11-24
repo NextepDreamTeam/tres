@@ -54,7 +54,7 @@ object Id3Impl extends Id3 {
     for (i <- itemList) {
       var sum: Int = 0
       for (b <- behaviorList) {
-        if (i.id.eq(b.item.id))
+        if (i.equals(b.item))
           sum = sum + 1
       }
       numberTargetOccurences += sum
