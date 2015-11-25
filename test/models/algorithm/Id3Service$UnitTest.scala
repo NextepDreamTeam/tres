@@ -4,60 +4,12 @@ import models.commons._
 import org.specs2.mutable.Specification
 
 /**
-  * Created by aandelie on 24/11/15.
+  * Created by bsuieric on 25/11/15.
   */
-class DecisionTree$IntegrationTest extends Specification {
+class Id3Service$UnitTest extends Specification {
 
-  "DecisionTree$IntegrationTest" should {
-    "create" in {
-      //play tennis example
-      val no: Item = Item(Tag("no")::Nil)
-      val si: Item = Item(Tag("si")::Nil)
-
-      val outlook: WidgetTag = WidgetTag("Outlook")
-      val temperature: WidgetTag = WidgetTag("Temperature")
-      val humidity: WidgetTag = WidgetTag("Humidity")
-      val wind: WidgetTag = WidgetTag("Wind")
-
-      val sunny: String = "Sunny"
-      val overcast: String = "Overcast"
-      val rain: String = "Rain"
-
-      val hot: String = "Hot"
-      val mild: String = "Mild"
-      val cool: String = "Cool"
-
-      val high: String = "High"
-      val normal: String = "Normal"
-
-      val weak: String = "Weak"
-      val strong: String = "Strong"
-
-
-      val trainingSet: List[Behavior] =
-        Behavior(no,Interaction(outlook,sunny)::Interaction(temperature,hot)::Interaction(humidity,high)::Interaction(wind,weak)::Nil):: //D1
-          Behavior(no,Interaction(outlook,sunny)::Interaction(temperature,hot)::Interaction(humidity,high)::Interaction(wind,strong)::Nil):: //D2
-          Behavior(si,Interaction(outlook,overcast)::Interaction(temperature,hot)::Interaction(humidity,high)::Interaction(wind,weak)::Nil):: //D3
-          Behavior(si,Interaction(outlook,rain)::Interaction(temperature,mild)::Interaction(humidity,high)::Interaction(wind,weak)::Nil):: //D4
-          Behavior(si,Interaction(outlook,rain)::Interaction(temperature,cool)::Interaction(humidity,normal)::Interaction(wind,weak)::Nil):: //D5
-          Behavior(no,Interaction(outlook,rain)::Interaction(temperature,cool)::Interaction(humidity,normal)::Interaction(wind,strong)::Nil):: //D6
-          Behavior(si,Interaction(outlook,overcast)::Interaction(temperature,cool)::Interaction(humidity,normal)::Interaction(wind,strong)::Nil):: //D7
-          Behavior(no,Interaction(outlook,sunny)::Interaction(temperature,mild)::Interaction(humidity,high)::Interaction(wind,weak)::Nil):: //D8
-          Behavior(si,Interaction(outlook,sunny)::Interaction(temperature,cool)::Interaction(humidity,normal)::Interaction(wind,weak)::Nil):: //D9
-          Behavior(si,Interaction(outlook,rain)::Interaction(temperature,mild)::Interaction(humidity,normal)::Interaction(wind,weak)::Nil):: //D10
-          Behavior(si,Interaction(outlook,sunny)::Interaction(temperature,mild)::Interaction(humidity,normal)::Interaction(wind,strong)::Nil):: //D11
-          Behavior(si,Interaction(outlook,overcast)::Interaction(temperature,mild)::Interaction(humidity,high)::Interaction(wind,strong)::Nil):: //D12
-          Behavior(si,Interaction(outlook,overcast)::Interaction(temperature,hot)::Interaction(humidity,normal)::Interaction(wind,weak)::Nil):: //D13
-          Behavior(no,Interaction(outlook,rain)::Interaction(temperature,mild)::Interaction(humidity,high)::Interaction(wind,strong)::Nil):: //D14
-          Nil
-
-      val response: Tree = DecisionTree.create(trainingSet)
-      response.size mustEqual 8
-    }
-
-
-    "create" in {
-      //house example
+  "Id3Service$UnitTest" should {
+    "getRecommendation" in {
       val no: Item = Item(Tag("no")::Tag("noo")::Nil)
       val si: Item = Item(Tag("si")::Tag("sii")::Nil)
       val forse: Item = Item(Tag("forse")::Nil)
@@ -106,13 +58,13 @@ class DecisionTree$IntegrationTest extends Specification {
           Behavior(forse,Interaction(district,rural)::Interaction(houseType,terrace)::Interaction(income,low)::Interaction(previousCustomer,yes)::Nil):: //D21
           Nil
 
-      val response: Tree = DecisionTree.create(trainingSet)
-      response.size mustEqual 28
+      val tree: Tree = DecisionTree.create(trainingSet)
+      val is: List[Interaction] = Interaction(district,"ula")::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,"mia")::Nil
+      val response = tree.getRecommendation(is)
+      response.size mustEqual(8)
     }
 
-
-    "create" in {
-      //house example
+    "getRecommendation" in {
       val no: Item = Item(Tag("no")::Tag("noo")::Nil)
       val si: Item = Item(Tag("si")::Tag("sii")::Nil)
       val forse: Item = Item(Tag("forse")::Nil)
@@ -143,8 +95,84 @@ class DecisionTree$IntegrationTest extends Specification {
           Behavior(forse,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,non)::Nil):: //D2
           Nil
 
-      val response: Tree = DecisionTree.create(trainingSet)
-      response.size mustEqual 6
+      val tree: Tree = DecisionTree.create(trainingSet)
+      val is = Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,non)::Nil
+      val response = tree.getRecommendation(is)
+      response.size mustEqual 2
+    }
+
+    "getRecommendation" in {
+      val no: Item = Item(Tag("no")::Tag("noo")::Nil)
+      val si: Item = Item(Tag("si")::Tag("sii")::Nil)
+      val forse: Item = Item(Tag("forse")::Nil)
+
+      val district: WidgetTag = WidgetTag("District")
+      val houseType: WidgetTag = WidgetTag("HouseType")
+      val income: WidgetTag = WidgetTag("Income")
+      val previousCustomer: WidgetTag = WidgetTag("PreviousCustomer")
+
+      val suburban: String = "Suburban"
+      val rural: String = "Rural"
+      val urban: String = "Urban"
+
+      val detached: String = "Detached"
+      val semi: String = "Semi-Detached"
+      val terrace: String = "Terrace"
+
+      val high: String = "High"
+      val low: String = "Low"
+
+      val yes: String = "Yes"
+      val non: String = "No"
+
+
+      val trainingSet: List[Behavior] =
+        Behavior(no,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,yes)::Nil):: //D1
+          Behavior(si,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,non)::Nil):: //D2
+          Behavior(forse,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,non)::Nil):: //D2
+          Nil
+
+      val tree: Tree = DecisionTree.create(trainingSet)
+      val is = Interaction(district,"null")::Interaction(houseType,"null")::Interaction(income,"null")::Interaction(previousCustomer,yes)::Nil
+      val response = tree.getRecommendation(is)
+      response.size mustEqual 1
+    }
+
+    "getRecommendation" in {
+      val no: Item = Item(Tag("no")::Tag("noo")::Nil)
+      val si: Item = Item(Tag("si")::Tag("sii")::Nil)
+      val forse: Item = Item(Tag("forse")::Nil)
+
+      val district: WidgetTag = WidgetTag("District")
+      val houseType: WidgetTag = WidgetTag("HouseType")
+      val income: WidgetTag = WidgetTag("Income")
+      val previousCustomer: WidgetTag = WidgetTag("PreviousCustomer")
+
+      val suburban: String = "Suburban"
+      val rural: String = "Rural"
+      val urban: String = "Urban"
+
+      val detached: String = "Detached"
+      val semi: String = "Semi-Detached"
+      val terrace: String = "Terrace"
+
+      val high: String = "High"
+      val low: String = "Low"
+
+      val yes: String = "Yes"
+      val non: String = "No"
+
+
+      val trainingSet: List[Behavior] =
+        Behavior(no,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,yes)::Nil):: //D1
+          Behavior(si,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,non)::Nil):: //D2
+          Behavior(forse,Interaction(district,rural)::Interaction(houseType,semi)::Interaction(income,high)::Interaction(previousCustomer,non)::Nil):: //D2
+          Nil
+
+      val tree: Tree = DecisionTree.create(trainingSet)
+      val is :List[Interaction]= Nil
+      val response = tree.getRecommendation(is)
+      response.size mustEqual 3
     }
 
   }
