@@ -21,6 +21,7 @@ object Odb {
     * @return a new OrientGraphFactory instance with the credentials given by
     *         configuration file
     */
+
   val factory = new OrientGraphFactory(
     current.configuration.getString("tresdb.url").get,
     current.configuration.getString("tresdb.username").get,

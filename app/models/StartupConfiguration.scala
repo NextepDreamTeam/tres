@@ -1,13 +1,10 @@
 package models
 
-import com.google.inject.Inject
-import play.api.Application
-import play.api.inject.ApplicationLifecycle
-import play.api.libs.concurrent.Akka
+import javax.inject.Inject
 
+import akka.actor.ActorSystem
+import models.algorithm.Id3Service
 import scala.concurrent.duration
-import play.api.Play.current
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 /**
   * Created by aandelie on 25/11/15.
@@ -15,12 +12,13 @@ import scala.concurrent.duration._
 sealed trait StartupConfiguration {}
 
 
-class Startup extends StartupConfiguration {
+class Startup @Inject() (actorSystem: ActorSystem) extends StartupConfiguration {
+
+  implicit val ec = actorSystem.dispatcher
 
   initialize()
 
   def initialize() = {
-    Akka.system.scheduler.schedule(Duration(0,duration.SECONDS),Duration(3,duration.SECONDS))(println("CIAONE"))
-    Akka.system.dispatcher
+    actorSystem.scheduler.schedule(Duration(0,duration.SECONDS),Duration(24,duration.SECONDS))(Id3Service.start())
   }
 }
