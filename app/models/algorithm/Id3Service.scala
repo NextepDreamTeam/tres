@@ -44,9 +44,16 @@ object Id3Service extends AlgorithmService {
     * @return
     */
   override def getRecommendation(interactions: List[Interaction]): List[Item] = {
-    decisionTree match {
-      case None => Nil
-      case Some(tree) => tree.getRecommendation(interactions)
+    interactions.map(i=> i.widgetTag).distinct.size == interactions.size match{
+      case false =>{
+        Logger.error("Request with multiple interaction with the same widget tag")
+        Nil
+      }
+      case true =>
+        decisionTree match {
+          case None => Nil
+          case Some(tree) => tree.getRecommendation(interactions)
+        }
     }
   }
 }

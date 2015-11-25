@@ -79,6 +79,12 @@ object Item{
     )
   }
 
+  implicit val itemsWrites = new Writes[List[Item]] {
+    def writes(items: List[Item]) = Json.obj(
+      "items" -> items
+    )
+  }
+
 
   /** implicit value for json formatter for the rest output
     * it includes every field except the rid field

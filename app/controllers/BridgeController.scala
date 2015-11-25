@@ -60,7 +60,7 @@ class BridgeController extends Controller {
           case JsError(_) => BadRequest("Invalid json request")
           case JsSuccess(interactions, _) => {
             val items: List[Item] = algorithmService.getRecommendation(interactions)
-            Ok("Valid json")
+            Ok(Json.toJson(items)(Item.itemsWrites))
           }
         }
     }

@@ -102,8 +102,13 @@ class BridgeController$UnitTest extends Specification with Mockito {
 
     "recommendation must response ok with valid json body" in new WithApplication {
       mockAlgorithmService.ready returns true
+      val items = Item(Tag("uno")::Tag("tre")::Nil)::Item(Tag("due")::Tag("tre")::Nil)::Nil
+      val interactions = Interaction(WidgetTag("wtag:sport"),"clicked")::Interaction(WidgetTag("wtag::mountain"),"onhover")::Nil
+      mockAlgorithmService.getRecommendation(interactions) returns items
       val body: JsValue = Json.parse("""{"interactions":[{"widgetTag":{"name":"wtag:sport"},"action":"clicked"},{"widgetTag":{"name":"wtag::mountain"},"action":"onhover"}]}""")
+      val expected = Json.parse("""{"items":[{"tags":[{"name":"uno"},{"name":"tre"}]},{"tags":[{"name":"due"},{"name":"tre"}]}]}""")
       val response = controller.recommendation().apply(FakeRequest(POST, "/tres/recommendation").withJsonBody(body))
+      contentAsJson(response) must equalTo(expected)
       status(response) must equalTo(OK)
     }
 
