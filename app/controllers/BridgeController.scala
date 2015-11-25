@@ -53,13 +53,16 @@ class BridgeController extends Controller {
   def recommendation() = Action{ request =>
     val jsonObject = request.body.asJson
     jsonObject match {
+      case None => BadRequest("Need json")
       case Some(json) =>
         val validate: JsResult[List[Interaction]] = json.validate[List[Interaction]](Interaction.interactionsReads)
         validate match {
-          case JsSuccess(interactions, _) => Ok("Valid json") //TODO get recommendation with given interactions
           case JsError(_) => BadRequest("Invalid json request")
+          case JsSuccess(interactions, _) => {
+            val items: List[Item] = algorithmService.getRecommendation(interactions)
+            Ok("Valid json")
+          }
         }
-      case None => BadRequest("Need json")
     }
   }
 }

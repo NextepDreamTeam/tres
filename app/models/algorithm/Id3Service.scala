@@ -1,7 +1,8 @@
 package models.algorithm
 
-import models.commons.{Item, WidgetTag, Behavior}
+import models.commons.{Interaction, Item, WidgetTag, Behavior}
 import models.storage._
+import play.api.Logger
 
 /**
   * Created by aandelie on 14/11/15.
@@ -28,8 +29,24 @@ object Id3Service extends AlgorithmService {
     val behaviors: List[Behavior] = behaviorDao.all()
     val able: Boolean = behaviors.size >= 100
     able match {
-      case true => decisionTree = Option(DecisionTree.create(behaviors))
-      case false =>
+      case true => {
+        Logger.info("ID3 started")
+        decisionTree = Option(DecisionTree.create(behaviors))
+        Logger.info("ID3 complete")
+      }
+      case false => Logger.warn("ID3 isn't already yet")
+    }
+  }
+
+  /**
+    *
+    * @param interactions
+    * @return
+    */
+  override def getRecommendation(interactions: List[Interaction]): List[Item] = {
+    decisionTree match {
+      case None => Nil
+      case Some(tree) => tree.getRecommendation(interactions)
     }
   }
 }

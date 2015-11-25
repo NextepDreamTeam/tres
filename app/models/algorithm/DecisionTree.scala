@@ -1,20 +1,41 @@
 package models.algorithm
 
 import models.commons._
-
 import scala.collection.immutable.ListMap
 
 
 sealed trait Tree{
   def size: Int
+  def getRecommendation(interactionList: List[Interaction]): List[Item]
 }
 case class Node(behaviorList: List[Behavior], widgetTag: WidgetTag, children: ListMap[String,Tree]) extends Tree {
   override def size: Int = 1 + children.map(c => c._2.size).sum
   override def toString: String = s"Tree:  ${widgetTag.name} \n " + children
+
+  override def getRecommendation(interactionList: List[Interaction]): List[Item] = {
+    interactionList match {
+      case Nil => behaviorList.map(b => b.item)
+      case _ =>{
+        val interaction = interactionList.find(i => i.widgetTag == widgetTag)
+        interaction match {
+          case None => behaviorList.map(b => b.item)
+          case Some(i) =>{
+            val child = children.get(i.action)
+            child match {
+              case None => behaviorList.map(b => b.item)
+              case Some(tree) => tree.getRecommendation(interactionList)
+            }
+          }
+        }
+      }
+    }
+  }
 }
 case class Leaf(behaviorList: List[Behavior]) extends Tree {
   override def size: Int = 1
   override def toString: String = "\nLeaf " + behaviorList.size + " " + DecisionTree.getDistinctItemList(behaviorList)
+
+  override def getRecommendation(interactionList: List[Interaction]): List[Item] = behaviorList.map(b => b.item)
 }
 
 object DecisionTree {
