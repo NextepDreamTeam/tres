@@ -3,9 +3,7 @@ package models.algorithm
 import models.commons._
 import org.specs2.mutable.Specification
 
-/**
-  * Created by bsuieric on 25/11/15.
-  */
+
 class Id3Service$UnitTest extends Specification {
 
   "Id3Service$UnitTest" should {
@@ -174,6 +172,4 @@ class Id3Service$UnitTest extends Specification {
       val response = tree.getRecommendation(is)
       response.size mustEqual 3
     }
-
-  }
 }
