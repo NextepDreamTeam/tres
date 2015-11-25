@@ -3,8 +3,12 @@ package controllers
 import models.algorithm.{Id3Service, AlgorithmService}
 import models.commons._
 import models.storage.{BehaviorOdb, BehaviorDao}
+import play.api.libs.concurrent.Akka
 import play.api.mvc._
 import play.api.libs.json._
+
+import scala.concurrent.duration
+import scala.concurrent.duration.Duration
 
 
 /** An instance that receives recommendation calls from client
