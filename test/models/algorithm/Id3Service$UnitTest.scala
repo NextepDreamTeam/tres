@@ -1,18 +1,16 @@
 package models.algorithm
 
+import models.commons._
 import org.specs2.mutable.Specification
 
 
 class Id3Service$UnitTest extends Specification {
 
   "Id3Service$UnitTest" should {
-    ok
-  }
-    /*
     "getRecommendation" in {
-      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil)
-      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil)
-      val forse: Item = Item(Tag("forse") :: Nil)
+      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil,Option("no"))
+      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil, Option("si"))
+      val forse: Item = Item(Tag("forse") :: Nil,Option("forse"))
 
       val district: WidgetTag = WidgetTag("District")
       val houseType: WidgetTag = WidgetTag("HouseType")
@@ -59,16 +57,18 @@ class Id3Service$UnitTest extends Specification {
           Nil
 
       val tree: Tree = DecisionTree.create(trainingSet)
-      val is: List[Interaction] = Interaction(district, "ula") :: Interaction(houseType, semi) :: Interaction(income, high) :: Interaction(previousCustomer, "mia") :: Nil
-      val response = tree.getRecommendation(is)
-      response.length mustEqual(3)
-    }
+      val is: List[Interaction] = Interaction(district, rural) :: Interaction(houseType, terrace) :: Interaction(income, high) :: Interaction(previousCustomer, non) :: Nil
 
+      val response = tree.getRecommendation(is)
+      val o = true
+      response.length mustEqual(1)
+    }
+  }
 
     "getRecommendation" in {
-      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil)
-      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil)
-      val forse: Item = Item(Tag("forse") :: Nil)
+      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil,Option("no"))
+      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil, Option("si"))
+      val forse: Item = Item(Tag("forse") :: Nil,Option("forse"))
 
       val district: WidgetTag = WidgetTag("District")
       val houseType: WidgetTag = WidgetTag("HouseType")
@@ -103,9 +103,9 @@ class Id3Service$UnitTest extends Specification {
     }
 
     "getRecommendation" in {
-      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil)
-      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil)
-      val forse: Item = Item(Tag("forse") :: Nil)
+      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil,Option("no"))
+      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil, Option("si"))
+      val forse: Item = Item(Tag("forse") :: Nil,Option("forse"))
 
       val district: WidgetTag = WidgetTag("District")
       val houseType: WidgetTag = WidgetTag("HouseType")
@@ -140,9 +140,9 @@ class Id3Service$UnitTest extends Specification {
     }
 
     "getRecommendation" in {
-      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil)
-      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil)
-      val forse: Item = Item(Tag("forse") :: Nil)
+      val no: Item = Item(Tag("no") :: Tag("noo") :: Nil,Option("no"))
+      val si: Item = Item(Tag("si") :: Tag("sii") :: Nil, Option("si"))
+      val forse: Item = Item(Tag("forse") :: Nil,Option("forse"))
 
       val district: WidgetTag = WidgetTag("District")
       val houseType: WidgetTag = WidgetTag("HouseType")
@@ -175,6 +175,6 @@ class Id3Service$UnitTest extends Specification {
       val response = tree.getRecommendation(is)
       response.size mustEqual 3
     }
-    */
+
   }
 
