@@ -2,7 +2,6 @@ package models.algorithm
 
 import models.commons._
 import org.specs2.mutable.Specification
-import play.api.libs.json.Json
 
 /**
   * Created by aandelie on 24/11/15.
@@ -108,7 +107,6 @@ class DecisionTree$IntegrationTest extends Specification {
           Nil
 
 
-      trainingSet.map(b=> println(Json.toJson(b)))
       val response: Tree = DecisionTree.create(trainingSet)
       response.size mustEqual 28
     }

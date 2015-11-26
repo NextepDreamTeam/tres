@@ -106,7 +106,7 @@ class BridgeController$UnitTest extends Specification with Mockito {
       val interactions = Interaction(WidgetTag("wtag:sport"),"clicked")::Interaction(WidgetTag("wtag::mountain"),"onhover")::Nil
       mockAlgorithmService.getRecommendation(interactions) returns items
       val body: JsValue = Json.parse("""{"interactions":[{"widgetTag":{"name":"wtag:sport"},"action":"clicked"},{"widgetTag":{"name":"wtag::mountain"},"action":"onhover"}]}""")
-      val expected = Json.parse("""{"items":[{"tags":[{"name":"uno"},{"name":"tre"}]},{"tags":[{"name":"due"},{"name":"tre"}]}]}""")
+      val expected = Json.parse("""{"items":[{"item":{"tags":[{"name":"uno"},{"name":"tre"}]},"percentage":0.01},{"item":{"tags":[{"name":"due"},{"name":"tre"}]},"percentage":0.01}]}""")
       val response = controller.recommendation().apply(FakeRequest(POST, "/tres/recommendation").withJsonBody(body))
       contentAsJson(response) must equalTo(expected)
       status(response) must equalTo(OK)

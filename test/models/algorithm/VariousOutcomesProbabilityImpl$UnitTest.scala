@@ -3,9 +3,7 @@ package models.algorithm
 import models.commons._
 import org.specs2.mutable.Specification
 
-/**
-  * Created by bsuieric on 23/11/15.
-  */
+
 class VariousOutcomesProbabilityImpl$UnitTest extends Specification {
 
   "VariousOutcomesProbabilityImpl$UnitTest" should {
@@ -52,7 +50,7 @@ class VariousOutcomesProbabilityImpl$UnitTest extends Specification {
       val behaviorList = b1 :: b2 :: b3 :: b4 :: b5 :: b6 :: Nil
       val itemL = item1 :: item2 :: Nil
       val result = VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, itemL)
-      result mustEqual((item1, "66%")::(item2, 33) :: Nil)
+      result mustEqual((item1, 66.0)::(item2, 33.0) :: Nil)
     }
 
     "probabilityForItemWithWidgetTagAndAction" in {
