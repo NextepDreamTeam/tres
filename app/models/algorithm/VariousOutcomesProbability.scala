@@ -37,7 +37,7 @@ object VariousOutcomesProbabilityImpl {
       }
       output += Tuple2(i, ((sum/totalBehaviors.toDouble)*100).toInt)
     }
-    output
+    output.distinct
   }
 
 

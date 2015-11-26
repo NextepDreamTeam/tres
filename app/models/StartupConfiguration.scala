@@ -19,6 +19,6 @@ class Startup @Inject() (actorSystem: ActorSystem) extends StartupConfiguration 
   initialize()
 
   def initialize() = {
-    actorSystem.scheduler.schedule(Duration(42,duration.SECONDS),Duration(24,duration.HOURS))(Id3Service.start())
+    actorSystem.scheduler.schedule(Duration(42,duration.SECONDS),Duration(60,duration.SECONDS))(Id3Service.start())
   }
 }

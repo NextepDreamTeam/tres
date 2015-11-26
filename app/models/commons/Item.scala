@@ -86,10 +86,10 @@ object Item{
   }
 
   implicit val outputWrites = new Writes[(Item,Double)] {
-    def writes(out: (Item,Double)) = Json.obj{
-      "item" -> out._1
+    def writes(out: (Item,Double)) = Json.obj(
+      "item" -> out._1,
       "percentage" -> out._2
-    }
+    )
   }
 
   implicit val percentageWrites = new Writes[List[(Item,Double)]] {

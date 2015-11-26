@@ -27,7 +27,7 @@ object Id3Service extends AlgorithmService {
 
   override def start(): Unit = {
     val behaviors: List[Behavior] = behaviorDao.all()
-    val able: Boolean = behaviors.size >= 100
+    val able: Boolean = behaviors.size >= 21
     able match {
       case true => {
         Logger.info("ID3 started")
