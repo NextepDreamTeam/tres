@@ -13,7 +13,7 @@ trait AlgorithmService {
     * @param interactions
     * @return
     */
-  def getRecommendation(interactions: List[Interaction]): List[Item]
+  def getRecommendation(interactions: List[Interaction]): List[(Item, Double)]
 
 
   /**

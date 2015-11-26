@@ -1,6 +1,6 @@
 package models.algorithm
 
-import models.commons.{Interaction, Item, WidgetTag, Behavior}
+import models.commons.{Behavior, Interaction, Item}
 import models.storage._
 import play.api.Logger
 
@@ -43,7 +43,7 @@ object Id3Service extends AlgorithmService {
     * @param interactions
     * @return
     */
-  override def getRecommendation(interactions: List[Interaction]): List[Item] = {
+  override def getRecommendation(interactions: List[Interaction]): List[(Item, Double)] = {
     interactions.map(i=> i.widgetTag).distinct.size == interactions.size match{
       case false =>{
         Logger.error("Request with multiple interaction with the same widget tag")

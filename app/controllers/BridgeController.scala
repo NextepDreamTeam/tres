@@ -1,14 +1,10 @@
 package controllers
 
-import models.algorithm.{Id3Service, AlgorithmService}
+import models.algorithm.{AlgorithmService, Id3Service}
 import models.commons._
-import models.storage.{BehaviorOdb, BehaviorDao}
-import play.api.libs.concurrent.Akka
-import play.api.mvc._
+import models.storage.{BehaviorDao, BehaviorOdb}
 import play.api.libs.json._
-
-import scala.concurrent.duration
-import scala.concurrent.duration.Duration
+import play.api.mvc._
 
 
 /** An instance that receives recommendation calls from client
@@ -63,8 +59,8 @@ class BridgeController extends Controller {
         validate match {
           case JsError(_) => BadRequest("Invalid json request")
           case JsSuccess(interactions, _) => {
-            val items: List[Item] = algorithmService.getRecommendation(interactions)
-            Ok(Json.toJson(items)(Item.itemsWrites))
+            val ip: List[(Item, Double)] = algorithmService.getRecommendation(interactions)
+            Ok(Json.toJson(ip)(Item.percentageWrites))
           }
         }
     }

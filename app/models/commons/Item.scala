@@ -85,6 +85,19 @@ object Item{
     )
   }
 
+  implicit val outputWrites = new Writes[(Item,Double)] {
+    def writes(out: (Item,Double)) = Json.obj{
+      "item" -> out._1
+      "percentage" -> out._2
+    }
+  }
+
+  implicit val percentageWrites = new Writes[List[(Item,Double)]] {
+    def writes(ip: List[(Item, Double)]) = Json.obj(
+      "items" -> ip
+    )
+  }
+
 
   /** implicit value for json formatter for the rest output
     * it includes every field except the rid field

@@ -6,23 +6,26 @@ import scala.collection.immutable.ListMap
 
 sealed trait Tree{
   def size: Int
-  def getRecommendation(interactionList: List[Interaction]): List[Item]
+  def getRecommendation(interactionList: List[Interaction]): List[(Item, Double)]
 }
 case class Node(behaviorList: List[Behavior], widgetTag: WidgetTag, children: ListMap[String,Tree]) extends Tree {
   override def size: Int = 1 + children.map(c => c._2.size).sum
   override def toString: String = s"Tree:  ${widgetTag.name} \n " + children
 
-  override def getRecommendation(interactionList: List[Interaction]): List[Item] = {
+  override def getRecommendation(interactionList: List[Interaction]): List[(Item, Double)] = {
     interactionList match {
-      case Nil => behaviorList.map(b => b.item)
+      case Nil => val itemList = behaviorList.map(b => b.item)
+        VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, itemList)
       case _ =>{
         val interaction = interactionList.find(i => i.widgetTag == widgetTag)
         interaction match {
-          case None => behaviorList.map(b => b.item)
+          case None => val itemList = behaviorList.map(b => b.item)
+            VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, itemList)
           case Some(i) =>{
             val child = children.get(i.action)
             child match {
-              case None => behaviorList.map(b => b.item)
+              case None => val itemList = behaviorList.map(b => b.item)
+                VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, itemList)
               case Some(tree) => tree.getRecommendation(interactionList)
             }
           }
@@ -35,7 +38,8 @@ case class Leaf(behaviorList: List[Behavior]) extends Tree {
   override def size: Int = 1
   override def toString: String = "\nLeaf " + behaviorList.size + " " + DecisionTree.getDistinctItemList(behaviorList)
 
-  override def getRecommendation(interactionList: List[Interaction]): List[Item] = behaviorList.map(b => b.item)
+  override def getRecommendation(interactionList: List[Interaction]): List[(Item,Double)] =
+    VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, behaviorList.map(b => b.item))
 }
 
 object DecisionTree {

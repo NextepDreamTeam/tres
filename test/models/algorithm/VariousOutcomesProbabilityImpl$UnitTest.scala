@@ -52,7 +52,7 @@ class VariousOutcomesProbabilityImpl$UnitTest extends Specification {
       val behaviorList = b1 :: b2 :: b3 :: b4 :: b5 :: b6 :: Nil
       val itemL = item1 :: item2 :: Nil
       val result = VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, itemL)
-      result mustEqual((item1, "66%")::(item2, "33%") :: Nil)
+      result mustEqual((item1, "66%")::(item2, 33) :: Nil)
     }
 
     "probabilityForItemWithWidgetTagAndAction" in {
@@ -104,7 +104,7 @@ class VariousOutcomesProbabilityImpl$UnitTest extends Specification {
       val itemL = item1 :: item2 :: Nil
 
       val result = VariousOutcomesProbabilityImpl.probabilityForItemWithWidgetTagAndAction(behaviorList, itemL, wTag, "clicked")
-      result mustEqual((item1, "50%")::(item2, "50%") :: Nil)
+      result mustEqual((item1, 50)::(item2, 50) :: Nil)
     }
 
   }

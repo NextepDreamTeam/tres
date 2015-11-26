@@ -26,16 +26,16 @@ object VariousOutcomesProbabilityImpl {
     * @param itemList : List[Item]
     * @return ListBuffer[(Item, String)]
     */
-  def findItemsAndCalculatePercentage(behaviorList: List[Behavior], itemList: List[Item]): ListBuffer[(Item, String)] = {
+  def findItemsAndCalculatePercentage(behaviorList: List[Behavior], itemList: List[Item]): ListBuffer[(Item, Double)] = {
     val totalBehaviors = behaviorList.length
-    var output = new ListBuffer[(Item, String)]()
+    var output = new ListBuffer[(Item, Double)]()
     for (i <- itemList) {
       var sum: Int = 0
       for (b <- behaviorList) {
         if (i.id.eq(b.item.id))
           sum += 1
       }
-      output += Tuple2(i, ((sum/totalBehaviors.toDouble)*100).toInt.toString+"%")
+      output += Tuple2(i, ((sum/totalBehaviors.toDouble)*100).toInt)
     }
     output
   }
@@ -49,7 +49,7 @@ object VariousOutcomesProbabilityImpl {
     * @param action : String
     * @return List[(Item, String)]
     */
-  def probabilityForItemWithWidgetTagAndAction(behaviorList: List[Behavior], itemList: List[Item], wtag: WidgetTag, action: String): List[(Item, String)] = {
+  def probabilityForItemWithWidgetTagAndAction(behaviorList: List[Behavior], itemList: List[Item], wtag: WidgetTag, action: String): List[(Item, Double)] = {
     val behaviors = Id3Impl.getBehaviorsWithWTagAndAction(behaviorList,wtag.name, action)
     findItemsAndCalculatePercentage(behaviors, itemList).toList
   }
@@ -61,7 +61,7 @@ object VariousOutcomesProbabilityImpl {
     * @param itemList : List[Item]
     * @return List[(Item, String)]
     */
-  def probabilityForItemsInBehaviors(behaviorList: List[Behavior], itemList: List[Item]): List[(Item, String)] = {
+  def probabilityForItemsInBehaviors(behaviorList: List[Behavior], itemList: List[Item]): List[(Item, Double)] = {
     findItemsAndCalculatePercentage(behaviorList, itemList).toList
   }
 }
