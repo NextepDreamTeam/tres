@@ -26,12 +26,7 @@ class DecisionTree$UnitTest extends Specification {
 
   "DecisionTree$UnitTest" should {
     "getDistinctWidgetTagList" in {
-      val widgetTagList =
-        WidgetTag("wtag:uno") ::
-          WidgetTag("wtag:due") ::
-          WidgetTag("wtag:tre") ::
-          WidgetTag("wtag:quattro") ::
-          Nil
+      val widgetTagList = WidgetTag("wtag:due") :: Nil
       val response = DecisionTree.getDistinctWidgetTagList(behaviorList)
       response.size mustEqual widgetTagList.size
       response mustEqual widgetTagList
