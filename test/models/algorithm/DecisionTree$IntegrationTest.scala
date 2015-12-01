@@ -148,5 +148,40 @@ class DecisionTree$IntegrationTest extends Specification {
       response.size mustEqual 6
     }
 
+    "create" in {
+      //extreme example
+      val no: Item = Item(Tag("no")::Nil)
+      val si: Item = Item(Tag("si")::Nil)
+
+      val outlook: WidgetTag = WidgetTag("Outlook")
+      val temperature: WidgetTag = WidgetTag("Temperature")
+      val humidity: WidgetTag = WidgetTag("Humidity")
+      val wind: WidgetTag = WidgetTag("Wind")
+
+      val sunny: String = "Sunny"
+      val overcast: String = "Overcast"
+      val rain: String = "Rain"
+
+      val hot: String = "Hot"
+      val mild: String = "Mild"
+      val cool: String = "Cool"
+
+      val high: String = "High"
+      val normal: String = "Normal"
+
+      val weak: String = "Weak"
+      val strong: String = "Strong"
+
+
+      val trainingSet: List[Behavior] =
+        Behavior(si,Interaction(outlook,sunny)::Nil):: //D1
+          Behavior(no,Interaction(temperature,hot)::Nil):: //D2
+          Behavior(si,Interaction(humidity,high)::Nil):: //D3
+          Nil
+
+      val response: Tree = DecisionTree.create(trainingSet)
+      response.size mustEqual 1
+    }
+
   }
 }

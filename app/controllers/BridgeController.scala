@@ -38,7 +38,8 @@ class BridgeController extends Controller {
         validate match {
           case JsError(_) => BadRequest("Invalid json request")
           case JsSuccess(behavior, _) =>
-            behaviorDao.save(behavior) match {
+            behavior.interactions.map(i=> i.widgetTag).distinct.size == behavior.interactions.size &&
+              behaviorDao.save(behavior) match {
               case true => Created
               case false => InternalServerError
             }
@@ -63,6 +64,22 @@ class BridgeController extends Controller {
             Ok(Json.toJson(ip)(Item.percentageWrites))
           }
         }
+    }
+  }
+
+  /**
+    *
+    */
+  def getAnswer = Action{ request =>
+    request.body.asJson match {
+      case None => BadRequest("Need json")
+      case Some(json) => json.validate[List[Interaction]](Interaction.interactionsReads) match {
+        case JsError(_) => BadRequest("Invalid json request")
+        case JsSuccess(interactions, _) =>{
+          val wTag: Option[WidgetTag] = algorithmService.getNextAnswer(interactions)
+          Ok(Json.toJson(wTag))
+        }
+      }
     }
   }
 }

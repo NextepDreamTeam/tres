@@ -5,6 +5,8 @@ import scala.collection.immutable.ListMap
 
 
 sealed trait Tree{
+  def stampa(liv: Int = 0)
+  def getWtag(interactions: List[Interaction]): Option[WidgetTag]
   def size: Int
   def getRecommendation(interactionList: List[Interaction]): List[(Item, Double)]
 }
@@ -33,6 +35,21 @@ case class Node(behaviorList: List[Behavior], widgetTag: WidgetTag, children: Li
       }
     }
   }
+
+  override def getWtag(interactions: List[Interaction]): Option[WidgetTag] = {
+    interactions.find(i => i.widgetTag == widgetTag) match {
+      case None => Option(widgetTag)
+      case Some(i) => children.get(i.action) match {
+        case None => Option(widgetTag)
+        case Some(tree) => tree.getWtag(interactions)
+      }
+    }
+  }
+
+  override def stampa(liv: Int): Unit ={
+    println("Node: " + liv + " wTag: " + widgetTag )
+    children.foreach(_._2.stampa(liv+1))
+  }
 }
 case class Leaf(behaviorList: List[Behavior]) extends Tree {
   override def size: Int = 1
@@ -40,12 +57,17 @@ case class Leaf(behaviorList: List[Behavior]) extends Tree {
 
   override def getRecommendation(interactionList: List[Interaction]): List[(Item,Double)] =
     VariousOutcomesProbabilityImpl.probabilityForItemsInBehaviors(behaviorList, behaviorList.map(b => b.item))
+
+  override def getWtag(interactions: List[Interaction]): Option[WidgetTag] = None
+
+  override def stampa(liv: Int = 0): Unit = println("Leaf: " + liv)
 }
 
 object DecisionTree {
 
   def getDistinctWidgetTagList(behaviorList: List[Behavior]): List[WidgetTag] = {
-    behaviorList.flatMap(b => b.interactions.map(i => i.widgetTag)).distinct
+    val dis = behaviorList.flatMap(b => b.interactions.map(i => i.widgetTag)).distinct
+    behaviorList.map(b => b.interactions.map(i => i.widgetTag)).foldRight(dis)(_ intersect _)
   }
 
   def getDistinctItemList(behaviorList: List[Behavior]): List[Item] = {

@@ -1,11 +1,12 @@
 package models.algorithm
 
-import models.commons.{Item, Interaction}
+import models.commons.{WidgetTag, Item, Interaction}
 
 /**
   * Rappresents the services of the models.algorithm
   */
 trait AlgorithmService {
+  def getNextAnswer(interactions: List[Interaction]): Option[WidgetTag]
 
 
   /**

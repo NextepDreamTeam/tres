@@ -1,6 +1,6 @@
 package models.algorithm
 
-import models.commons.{Behavior, Interaction, Item}
+import models.commons.{WidgetTag, Behavior, Interaction, Item}
 import models.storage._
 import play.api.Logger
 
@@ -53,6 +53,20 @@ object Id3Service extends AlgorithmService {
         decisionTree match {
           case None => Nil
           case Some(tree) => tree.getRecommendation(interactions)
+        }
+    }
+  }
+
+  override def getNextAnswer(interactions: List[Interaction]): Option[WidgetTag] = {
+    interactions.map(i=> i.widgetTag).distinct.size == interactions.size match{
+      case false =>{
+        Logger.error("Request with multiple interaction with the same widget tag")
+        None
+      }
+      case true =>
+        decisionTree match {
+          case None => None
+          case Some(tree) => tree.getWtag(interactions)
         }
     }
   }
